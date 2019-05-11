@@ -1,0 +1,34 @@
+<h1>
+  Grafica Dinamica
+</h1>
+<br>
+
+
+
+<div class="row">
+  <div class="col-md-6">
+    <h2>Bar Chart</h2>
+    <div style="display: block;">
+      <canvas baseChart width="400" height="400"
+      [datasets]="barChartData"
+      [labels]="barChartLabels"
+      [options]="barChartOptions"
+      [legend]="barChartLegend"
+      [chartType]="barChartType">
+    </canvas>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <ng-multiselect-dropdown
+    [placeholder]="'seleccionar'"
+    [data]="dropdownList"
+    [(ngModel)]="selectedItems"
+    [settings]="dropdownSettings"
+    (onSelect)="onItemSelect($event)"
+    (onSelectAll)="onSelectAll($event)"
+  >
+  </ng-multiselect-dropdown>
+  <br>
+  <button (click)="votar()" class="btn btn-primary btn-lg" >Votar</button>
+  </div>
+</div>

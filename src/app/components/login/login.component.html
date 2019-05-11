@@ -1,0 +1,204 @@
+<div *ngIf="getRegistrado()"class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
+				<form class="login100-form validate-form">
+					<span class="login100-form-title p-b-55">
+						Inicio
+					</span>
+
+					<div class="wrap-input100 validate-input m-b-16" data-validate = "Valid email is required: ex@abc.xyz">
+						<input [(ngModel)]="correo"  class="input100" type="text" name="correo" placeholder="Email" autocomplete="off">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<span class="lnr lnr-envelope"></span>
+						</span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-16" data-validate = "Password is required">
+						<input [(ngModel)]="password" class="input100" type="password" name="password" placeholder="Password">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<span class="lnr lnr-lock"></span>
+						</span>
+					</div>
+
+					<!--<div class="contact100-form-checkbox m-l-4">
+						<input id="ckb1" type="checkbox" name="check">
+						<label class="label-checkbox100" for="ckb1">
+							Recordame
+						</label>
+					</div>-->
+
+					
+					<div class="page__toggle" style="margin-top: 15px">
+						<label class="toggle">
+						  <input  [(ngModel)]="recordame" name="recordame" class="toggle__input" type="checkbox">
+						  <span class="toggle__label">
+							<span class="toggle__text">Recordame!</span>
+						  </span>
+						</label>
+					</div>
+
+					
+					<div class="container-login100-form-btn p-t-25">
+						<button  (click)="loguearUsuario()" class="login100-form-btn">
+							Login
+						</button>
+					</div>
+
+					<div class="text-center w-full p-t-42 p-b-22">
+						<span class="txt1">
+							
+						</span>
+					</div>
+
+					<div class="text-center w-full p-t-115">
+						<span class="txt1">
+							No es usuario?
+						</span>
+
+						
+						<button class="txt1 bo1 hov1" (click)="registrese()">
+							Registrese
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+  </div>
+
+
+  <!--Registrarse-->
+
+  <div *ngIf="!getRegistrado()" class="limiter">
+	<div class="container-login100">
+		
+
+		
+		<div class="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
+			<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+				<span class="login100-form-title p-b-55">
+					Registrate
+				</span>
+
+				<div class="wrap-input100  m-b-16 form-group">
+					<input class="input100 form-control" formControlName="nombre" type="text" placeholder="Nombre" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.nombre.errors }">
+					<span class="focus-input100"></span>
+					<span class="symbol-input100">
+						<span class="lnr lnr-envelope"></span>
+					</span>
+					<div *ngIf="submitted && f.nombre.errors" class="invalid-feedback">
+                            <div *ngIf="f.nombre.errors.required">Nombre obligatorio</div>
+                    </div>
+				</div>
+
+
+
+
+				<div class="wrap-input100  m-b-16 form-group">
+						<input class="input100 form-control" formControlName="apellido" type="text" placeholder="Apellido" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.apellido.errors }">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<span class="lnr lnr-envelope"></span>
+						</span>
+						<div *ngIf="submitted && f.apellido.errors" class="invalid-feedback">
+								<div *ngIf="f.apellido.errors.required">Apellido obligatorio</div>
+						</div>
+				</div>
+
+
+
+				<div class="wrap-input100  m-b-16 form-group">
+						<input class="input100 form-control" formControlName="numeroLegajo" type="text" placeholder="Numero de usuario (P0)" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.numeroLegajo.errors }">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<span class="lnr lnr-envelope"></span>
+						</span>
+						<div *ngIf="submitted && f.numeroLegajo.errors" class="invalid-feedback">
+								<div *ngIf="f.numeroLegajo.errors.required">Numero de legajo obligatorio</div>
+						</div>
+					</div>
+
+
+			
+
+				<div class="wrap-input100  m-b-16 form-group">
+						<input class="input100 form-control" formControlName="equipo" type="text" placeholder="Equipo de trabajo" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.equipo.errors }">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<span class="lnr lnr-envelope"></span>
+						</span>
+						<div *ngIf="submitted && f.equipo.errors" class="invalid-feedback">
+								<div *ngIf="f.equipo.errors.required">El Equipo es obligatorio</div>
+						</div>
+				</div>
+
+
+
+				<div class="wrap-input100  m-b-16 form-group">
+						<input class="input100 form-control" formControlName="correo" type="text" placeholder="Email..." autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.correo.errors }">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<span class="lnr lnr-envelope"></span>
+						</span>
+						<div *ngIf="submitted && f.correo.errors" class="invalid-feedback">
+								<div *ngIf="f.correo.errors.required">Correo obligatorio</div>
+								<div *ngIf="f.correo.errors.email">error de formato (xxxx@xxx.com)</div>
+								
+						</div>
+					</div>
+					<div class="wrap-input100  m-b-16 form-group">
+							<input class="input100 form-control" formControlName="tecnologias" type="text" placeholder="Tecnologias" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.tecnologias.errors }">
+							<span class="focus-input100"></span>
+							<span class="symbol-input100">
+								<span class="lnr lnr-envelope"></span>
+							</span>
+							
+					</div>
+
+				
+
+			
+				
+
+				<div class="wrap-input100  m-b-16 form-group">
+						<input class="input100 form-control" formControlName="password" type="password" placeholder="password" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<span class="lnr lnr-lock"></span>
+						</span>
+						<div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+								<div *ngIf="f.password.errors.required">Password obligatorio</div>
+						</div>
+				</div>
+
+				<div class="wrap-input100  m-b-16 form-group">
+						<input class="input100 form-control" formControlName="confirmpassword" type="password" placeholder="Confirma password" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.confirmpassword.errors }">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<span class="lnr lnr-lock"></span>
+						</span>
+						<div *ngIf="submitted && f.confirmpassword.errors" class="invalid-feedback">
+								<div *ngIf="f.confirmpassword.errors.required">Password obligatorio</div>
+								<div *ngIf="f.confirmpassword.errors.mustMatch">Passwords must match</div>
+						</div>
+				</div>
+
+			
+				
+				<div class="form-group container-login100-form-btn p-t-25">
+					<button   class="login100-form-btn">
+						Guardar
+					</button>
+				</div>
+
+				<div class="text-center w-full p-t-42 p-b-22">
+					<span class="txt1">
+						
+					</span>
+				</div>
+			</form>
+		</div>
+	
+	</div>
+</div>
