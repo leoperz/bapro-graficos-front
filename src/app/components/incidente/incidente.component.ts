@@ -18,6 +18,7 @@ export class IncidenteComponent implements OnInit {
   public cerrar : boolean = false;
   registerForm: FormGroup;
   url = 'http://localhost:5500/';
+  adjunto:string = "";
 
 
   constructor(private _p: ProviderService, private fb: FormBuilder,
@@ -53,7 +54,8 @@ export class IncidenteComponent implements OnInit {
     payload.transaccion = form.transaccion;
     payload.fecha_primer_reclamo = form.fecha_primer_reclamo;
     payload.estado = "nuevo";
-    console.log(payload.fecha_primer_reclamo)
+    payload.adjunto = this.adjunto;
+    
    
     this._p.guardarIncidente(payload).subscribe(
       data=>{
@@ -82,7 +84,9 @@ export class IncidenteComponent implements OnInit {
       this.makeFileRequest(this.url+'adjuntarArchivo', [], this.filesToUpload)
       .then(
         (result:any)=>{
-          console.log("asi queda result =>",result);
+           alertify.alert('Mensaje', 'Nuevo archivo adjuntado');
+            this.adjunto = result;
+            
         }
       );
     }

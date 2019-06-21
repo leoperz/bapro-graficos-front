@@ -9,21 +9,26 @@ export class LocalStorageService {
   token:string='';
   
   constructor() { 
-    console.log("inicia el localStorage");
-    if(localStorage.getItem('identity')){
-      this.identity = JSON.parse(localStorage.getItem('identity'));
-    }
-    if(localStorage.getItem('token')){
-      this.token = localStorage.getItem('token');
-    }
+   
   }
 
   
   getIdentity(){
+    
+    if(localStorage.getItem('identity')){
+      
+      this.identity = JSON.parse(localStorage.getItem('identity'));
+    }
     return this.identity;
   }
 
   getToken(){
-    return this.token;
+    if(localStorage.getItem('token')){
+      this.token = localStorage.getItem('token');
+      
   }
+  return this.token;
+}
+
+
 }

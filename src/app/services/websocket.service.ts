@@ -29,19 +29,17 @@ export class WebsocketService {
    }
 
 
-  /*   
-     
-   
+  
+   //metodo generico para emitir un mensaje mediante socket
 
-   emitirEvento(evento:string, payload?:any, callback?:Function){
-    this._socket.emit(evento, payload, callback);
+   emit(evento: string, payload?:any, callback?:Function){
+      this._socket.emit(evento, payload, callback);
    }
 
-   escucharEvento(evento:string){
-    return this._socket.fromEvent(evento);
-   }*/
 
-   //metodo genrico para esuchar cualquier evento en el server
+
+   //metodo generico para esuchar cualquier evento en el server
+   
    esucucharEvento(evento:string){
     return this._socket.fromEvent(evento);
    }

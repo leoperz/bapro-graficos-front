@@ -77,7 +77,6 @@ loguearUsuario(){
     (result:any)=>{
     
       identity = result.usuario;
-     
       token = result.token;
     },
     error=>{
@@ -102,9 +101,9 @@ loguearUsuario(){
         localStorage.setItem('identity', JSON.stringify(identity));
         localStorage.setItem('token', token);
         alertify.alert('Mensaje', 'usuario logueado correctamente');
+        this._r.navigateByUrl('/dashboard');
         this.correo = "";
         this.password = "";
-        this._r.navigateByUrl('/dashboard')
       
     }
   );

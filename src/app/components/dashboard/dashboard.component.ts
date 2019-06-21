@@ -16,6 +16,7 @@ export class DashboardComponent implements OnInit {
   urlGetImagen = 'http://localhost:5500/obtenerImagen/';
   identity: any;
   altaIncidente:boolean = false;
+  listaIncidentes: boolean = false;
   incidentesNuevos:number=0;
   incidentesResueltos:number=0;
   incidentesAsignados:number=0;
@@ -68,6 +69,8 @@ export class DashboardComponent implements OnInit {
    
   }
 
+
+
   iraPerfil(){
     this._r.navigateByUrl('/perfil');
   }
@@ -76,15 +79,30 @@ export class DashboardComponent implements OnInit {
     this.altaIncidente = true;
   }
 
+
+  mostrarListaIncidentes(){
+    this.listaIncidentes = true;
+  }
+
+  /*iraListaIncidentes(){
+    this._r.navigateByUrl('/listaIncidentes');
+  }*/
+
   cerrarIncidente(respuesta:any){
     this.altaIncidente = respuesta;
   }
 
+  cerrarListaIncidentes(respuesta:any){
+    this.listaIncidentes = respuesta;
+  }
+
+
+
   escucharEvento(){
     this._ws.esucucharEvento('cantidad-incidentes').subscribe(
       (data:any)=>{
-        this.incidentesNuevos = data;
-        console.log(this.incidentesNuevos);
+        this.incidentesTotales = data;
+        console.log("cantidad de incidentes nuevos (socket)",this.incidentesNuevos);
       },
       err=>{
 

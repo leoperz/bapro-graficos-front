@@ -45,12 +45,19 @@
                                             
                                         </mat-form-field>
                                     </div>
-                                    <div style="text-align: right; margin-right: 10px">
-                                        <button  (click)="subirArchivo($event)" type="file" mat-fab color="primary">Adjuntar</button>
-                                    </div>
-                                    <span class="btn btn-primary btn-file">
-                                        Seleccionar imagen<input type="file" (change)="subirArchivo($event)">
+                                   
+                                   
+                                    
+
+                        
+                                  
+                                    <span class="round-button btn-file" title="Adjuntar imagenes">
+                                        <i class="fas fa-plus"></i><input type="file" (change)="subirArchivo($event)">
                                     </span>
+                                    
+                                  
+                                  
+                                    
                                     <br>
                                     <button type="submit" mat-raised-button color="primary">Guardar</button>
                                     <button (click)="cerrarComponente()" style="margin-left: 10px" mat-raised-button color="warn">Cerrar</button>

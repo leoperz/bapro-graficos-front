@@ -1,0 +1,88 @@
+
+              
+                  <!-- Dropdown - Messages -->
+                  <div  style="background: #F0F1F4" class="shadow animated--grow-in" aria-labelledby="messagesDropdown">
+                    <h6  class="dropdown-header" style="background-color: #673AB7; color: white">
+                      <!--Mensajes-->
+                      Incidentes Nuevos
+                    </h6>
+                    
+                    <a *ngFor="let item of incidentes" class="dropdown-item d-flex align-items-center" data-toggle="modal" data-target="#exampleModal" (click)="cargarDatos(item)">
+                      <div class="dropdown-list-image mr-3">
+                        <img class="rounded-circle img-profile" src= {{urlGetImagen}}{{item.usuario.imagen}} >
+                        <div class="status-indicator bg-success"></div>
+                      </div>
+                      <div class="font-weight-bold">
+                        <div class="text-truncate">{{item.descripcion}}</div>
+                        <div class="small text-gray-500">{{item.titulo}}
+                        
+                         
+                          <i *ngIf="item.adjunto !='' " class="fas fa-paperclip"></i>
+                        </div>
+                        
+                      </div>
+                      
+                    </a>
+                    <hr>
+                    <button  style="margin-left: 10px ; margin-bottom: 10px" mat-raised-button color="primary" (click)="cerrarComponente()">Cerrar lista</button>
+                    
+                    <h6  class="dropdown-header" style="background-color: #673AB7; color:#673AB7">
+                      <!--Mensajes-->
+                      Incidentes Nuevos
+                    </h6>
+                    
+                   </div>
+
+                   <!--Armado de Modal para la asignacion del incidente al equipo-->
+
+                   <!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Resumen</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-4"><p><strong>Titulo:</strong></p></div>
+            <div class="col-8"><p>{{incidente.titulo}}</p></div>
+            
+            <div class="col-4"><p><strong>Desripcion:</strong></p></div>
+            <div class="col-8"><p>{{incidente.descripcion}}</p></div>
+
+            <div class="col-4"><p><strong>Estado:</strong></p></div>
+            <div class="col-8"><p>{{incidente.estado}} </p></div>
+
+            <div class="col-4"><p><strong>Fecha Alta:</strong></p></div>
+            <div class="col-8"><p>{{incidente.fechaAlta.dia}}/{{incidente.fechaAlta.mes}}/{{incidente.fechaAlta.anio}} </p></div>
+
+            <div class="col-4"><p><strong>Equipos:</strong></p></div>
+            <div class="col-8">
+              <select>
+                <option *ngFor="let item of equipos" [value]= "item.nombre">{{item.nombre}}</option>
+              </select>
+            </div>
+
+            <div class="col-4"><p><strong>Adjunto:</strong></p></div>
+            <div *ngIf="incidente.adjunto !='' "  class="col-8"><p> <a download="adjunto" href="http://localhost:5500/obtenerImagen/oMnG85P5D0-aGIkBmSY4qVfu.jpg">archivo</a></p></div>
+            <div *ngIf="incidente.adjunto =='' " class="col-8"><p>Sin Adjunto</p></div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary">Asignar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+                  
+                  

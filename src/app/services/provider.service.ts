@@ -40,6 +40,7 @@ export class ProviderService implements OnInit {
 
  
   guardarIncidente(json:any){
+    json.correo = this._l.getIdentity().correo;
     
     let headers = new HttpHeaders({
       'Authorization':this._l.getToken()
@@ -55,6 +56,15 @@ export class ProviderService implements OnInit {
 
   cantidadIncidentesPorEstado(){
     return this._http.get(this.url+'cantidadIncidentesPorEstado');
+  }
+
+
+  incidentesNuevos(){
+    return this._http.get(this.url+'incidentesNuevos');
+  }
+
+  getEquipos(){
+    return this._http.get(this.url+'equipos');
   }
 
 

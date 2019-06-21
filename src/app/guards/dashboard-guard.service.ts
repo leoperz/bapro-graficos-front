@@ -17,11 +17,14 @@ export class DashboardGuardService implements CanActivate {
 
 
   canActivate(){
-    
+    console.log("entra en el canActivate");
+    console.log(this._ls);
   if(this._ls.getIdentity()){
+    
     
     return true;
   }else{
+    console.log('entra en el else');
     this._r.navigateByUrl('/inicio');
     return false;
   }

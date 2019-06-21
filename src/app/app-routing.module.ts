@@ -5,12 +5,14 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashboardGuardService } from './guards/dashboard-guard.service';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { IncidenteComponent } from './components/incidente/incidente.component';
+import {ListaIncidentesComponent} from './components/lista-incidentes/lista-incidentes.component';
 
 const appRoutes: Routes = [
   {path: 'inicio', component: LoginComponent},
   {path: 'dashboard', component: DashboardComponent, canActivate: [DashboardGuardService]},
   {path: 'perfil', component: PerfilComponent},
   {path:'incidente', component: IncidenteComponent},
+  {path:'listaIncidentes', component: ListaIncidentesComponent},
   {path:'**', component:LoginComponent}
 ];
 
