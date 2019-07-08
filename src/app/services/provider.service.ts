@@ -1,13 +1,17 @@
 import { Injectable, OnInit } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { LocalStorageService } from './local-storage.service';
+import { Subject } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProviderService implements OnInit {
 
- 
+ private tecnologias$ = new Subject<any[]>();
+ url:string = 'http://localhost:5500/'
+ listaTecnologias:any[] =[];
 
   constructor(private _http : HttpClient, private _l: LocalStorageService) { 
   
@@ -19,7 +23,8 @@ export class ProviderService implements OnInit {
    
   }
 
-  url:string = 'http://localhost:5500/'
+  
+
 
  
 
@@ -66,6 +71,36 @@ export class ProviderService implements OnInit {
   getEquipos(){
     return this._http.get(this.url+'equipos');
   }
+
+
+  asignarIncidente(json:any){
+    return this._http.post(this.url+'asignarIncidente', json);
+  }
+
+ obtenerImagen(archivo:string){
+   console.log("llega al servicio: ", archivo);
+   return this._http.get(this.url+'obtenerImagen'+'/'+archivo);
+ }
+
+ downloadFile(file:String){
+   let body = {filename:file};
+
+   return this._http.post(this.url+'download', body, {
+     responseType:'blob',
+     headers: new HttpHeaders().append('Content-Type', 'application/json')
+   });
+ }
+
+ setListaTecnologias(array:any[]){
+  for(let item of array){
+    this.listaTecnologias.push(item);
+  }
+  this.tecnologias$.next(this.listaTecnologias);
+ }
+
+ getTecnologias$(){
+   return this.tecnologias$.asObservable();
+ }
 
 
 }

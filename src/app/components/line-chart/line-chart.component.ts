@@ -32,7 +32,7 @@ export class LineChartComponent implements OnInit {
 
   ngOnInit() {
     this.getData();
-    this.esucucharEvento();
+    this.escucharEvento();
   }
 
 
@@ -41,7 +41,7 @@ export class LineChartComponent implements OnInit {
   }
 
 
-  esucucharEvento(){
+  escucharEvento(){
     this.socket.esucucharEvento('line-chart').subscribe((data:any)=>this.lineChartData=data);
   }
 

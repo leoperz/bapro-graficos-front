@@ -26,8 +26,8 @@
               <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                   <h6 class="collapse-header">Gestion de incidentes:</h6>
-                  <a (click)="mostrarAltaIncidente()" class="collapse-item">Alta</a>
-                  <a (click)="mostrarListaIncidentes()" class="collapse-item">Asignar</a>
+                  <a (click)="mostrarAltaIncidente(target)" class="collapse-item">Alta</a>
+                  <a (click)="mostrarListaIncidentes(target2)" class="collapse-item">Asignar</a>
                 </div>
               </div>
             </li>
@@ -46,15 +46,12 @@
             <i class="fa fa-bars"></i>
           </button>
           <!--Hay que buscar usar el tooltip-->
-          <i *ngIf="_ws.status" title="Conectado al servidor de notificaciones"
+          <i ngbTooltip=  "Conectado al servidor de notificaciones"  placement="right" *ngIf="_ws.status" 
             
            class="fas fa-link fa-lg"></i>
            
-           <i *ngIf="!_ws.status" title="Desconectado del servidor de notificaciones"  
+           <i *ngIf="!_ws.status" placement="right" ngbTooltip="Desconectado del servidor de notificaciones"  
            class="fas fa-unlink"></i>
-
-          
-
            
            
 
@@ -410,16 +407,22 @@
 
 
     <!--Agregado del app-incidente para el alta de un nuevo item-->
-    <div *ngIf="altaIncidente" >
+    <section #target >
+        <div *ngIf="altaIncidente" >
       
-        <app-incidente (appIncidente)=cerrarIncidente($event)></app-incidente>
-    </div>
+            <app-incidente  (appIncidente)=cerrarIncidente($event)></app-incidente>
+        </div>
+
+    </section>
+   
 
     <!--Agregado del app-lista-incidentes para la asignacion del incidente-->
-   
-    <div *ngIf="listaIncidentes">
-      <app-lista-incidentes (appListaIncidentes)=cerrarListaIncidentes($event)></app-lista-incidentes>
-    </div>
+    <section #target2>
+        <div *ngIf="listaIncidentes">
+            <app-lista-incidentes (appListaIncidentes)=cerrarListaIncidentes($event)></app-lista-incidentes>
+          </div>
+    </section>
+    
 
 
         

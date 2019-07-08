@@ -7,15 +7,18 @@ import {HttpClientModule} from '@angular/common/http';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { LoginComponent} from './components/login/login.component';
+import { LoginComponent, NgbdModalContent} from './components/login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import {MatInputModule, MatButtonModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { IncidenteComponent } from './components/incidente/incidente.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {FileUploadModule} from 'ng2-file-upload';
 import { ListaIncidentesComponent } from './components/lista-incidentes/lista-incidentes.component';
 import {LineChartComponent} from './components/line-chart/line-chart.component';
+import { UploadComponent } from './components/upload/upload.component';
+
 
 
 
@@ -29,7 +32,9 @@ const config: SocketIoConfig = {url:'http://localhost:5500', options:{}};
     PerfilComponent,
     IncidenteComponent,
     ListaIncidentesComponent,
-    LineChartComponent
+    LineChartComponent,
+    UploadComponent,
+    NgbdModalContent
 
     
   ],
@@ -45,12 +50,15 @@ const config: SocketIoConfig = {url:'http://localhost:5500', options:{}};
     MatInputModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    NgbModule
+    NgbModule,
+    FileUploadModule
+    
     
    
   ],
  
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents:[NgbdModalContent]
 })
 export class AppModule { }

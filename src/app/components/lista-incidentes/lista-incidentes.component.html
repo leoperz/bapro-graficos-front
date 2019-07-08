@@ -39,50 +39,69 @@
 
   
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Resumen</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-4"><p><strong>Titulo:</strong></p></div>
-            <div class="col-8"><p>{{incidente.titulo}}</p></div>
-            
-            <div class="col-4"><p><strong>Desripcion:</strong></p></div>
-            <div class="col-8"><p>{{incidente.descripcion}}</p></div>
-
-            <div class="col-4"><p><strong>Estado:</strong></p></div>
-            <div class="col-8"><p>{{incidente.estado}} </p></div>
-
-            <div class="col-4"><p><strong>Fecha Alta:</strong></p></div>
-            <div class="col-8"><p>{{incidente.fechaAlta.dia}}/{{incidente.fechaAlta.mes}}/{{incidente.fechaAlta.anio}} </p></div>
-
-            <div class="col-4"><p><strong>Equipos:</strong></p></div>
-            <div class="col-8">
-              <select>
-                <option *ngFor="let item of equipos" [value]= "item.nombre">{{item.nombre}}</option>
-              </select>
-            </div>
-
-            <div class="col-4"><p><strong>Adjunto:</strong></p></div>
-            <div *ngIf="incidente.adjunto !='' "  class="col-8"><p> <a download="adjunto" href="http://localhost:5500/obtenerImagen/oMnG85P5D0-aGIkBmSY4qVfu.jpg">archivo</a></p></div>
-            <div *ngIf="incidente.adjunto =='' " class="col-8"><p>Sin Adjunto</p></div>
-
+  <div *ngIf="incidentes.length > 0"> 
+    <div  class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Resumen</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary">Asignar</button>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-4"><p><strong>Titulo:</strong></p></div>
+              <div class="col-8"><p>{{incidente.titulo}}</p></div>
+                            
+              <div class="col-4"><p><strong>Desripcion:</strong></p></div>
+              <div class="col-8"><p>{{incidente.descripcion}}</p></div>
+  
+              <div class="col-4"><p><strong>Estado:</strong></p></div>
+              <div class="col-8"><p>{{incidente.estado}} </p></div>
+  
+              <div class="col-4"><p><strong>Fecha Alta:</strong></p></div>
+              <div class="col-8"><p>{{fechaAux}} </p></div>
+  
+              <div class="col-4"><p><strong>Equipos:</strong></p></div>
+              <div class="col-8">
+                <select [(ngModel)]="_idEquipo">
+                  <option *ngFor="let item of equipos" [value]= "item._id">{{item.nombre}}</option>
+                </select>
+              </div>
+  
+              <div class="col-4"><p><strong>Adjunto:</strong></p></div>
+              <div *ngIf="incidente.adjunto !='' "  class="col-8">
+                
+                <p>
+                    <a>
+                      <img (click)="download(incidente)" src="../../../assets/imagenes/clip.png" style="width: 40px ; height: 35px;"  width="104" height="142">
+                    </a>
+  
+                    
+  
+                </p>
+              
+              
+              </div>
+  
+  
+  
+              <div *ngIf="incidente.adjunto =='' " class="col-8"><p>Sin Adjunto</p></div>
+  
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" (click)="asignarIncidente(incidente._id)" data-dismiss="modal">Asignar</button>
+          </div>
+        
         </div>
       </div>
     </div>
+    
   </div>
-  
+
 
                   
                   

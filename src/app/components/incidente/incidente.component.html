@@ -48,12 +48,36 @@
                                    
                                    
                                     
+                                
 
+                                    <div class="col-12" style="text-align: right">
+                                            <span class="round-button btn-file" placement="right" ngbTooltip="Adjuntar imagenes">
+                                                    <i class="fas fa-plus"></i><input type="file" name="fileUpload" id="fileUpload"
+                                                    multiple ng2FileSelect [uploader]="uploader">
+                                                </span>
+                                    </div>
+                                    <br>
+                                    <div class="container-fluid">
+                                        <div class="row" *ngFor="let item of uploader.queue" style="padding-bottom: 10px">
+                                            <div class="col-sm-4">{{item.file.name}}</div>
+                                            <div class="col-sm-4">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-alert"  [ngStyle]="{'width':item.progress+'%'}"></div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+                                                    
+                                                <button name="borrar" (click)="item.remove()"  mat-raised-button color="warn">Borrar</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                   
                         
                                   
-                                    <span class="round-button btn-file" title="Adjuntar imagenes">
-                                        <i class="fas fa-plus"></i><input type="file" (change)="subirArchivo($event)">
-                                    </span>
+                                       
                                     
                                   
                                   

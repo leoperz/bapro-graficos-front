@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { ProviderService } from 'src/app/services/provider.service';
 
+
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -75,13 +77,21 @@ export class DashboardComponent implements OnInit {
     this._r.navigateByUrl('/perfil');
   }
 
-  mostrarAltaIncidente(){
+  mostrarAltaIncidente($element){
     this.altaIncidente = true;
+    setTimeout(() => {
+      $element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+    }, 300);
+   
   }
 
 
-  mostrarListaIncidentes(){
+  mostrarListaIncidentes($element){
     this.listaIncidentes = true;
+    setTimeout(() => {
+      $element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+    }, 300);
+    
   }
 
   /*iraListaIncidentes(){

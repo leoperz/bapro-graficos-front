@@ -3,6 +3,11 @@ import { ProviderService } from 'src/app/services/provider.service';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import * as alertify from 'alertifyjs';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import {FileUploader} from 'ng2-file-upload';
+import * as moment from 'moment';
+
+
+const uri = 'http://localhost:5500/adjuntarArchivoMultiple';
 
 
 @Component({
@@ -11,18 +16,24 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
   styleUrls: ['./incidente.component.css']
 })
 export class IncidenteComponent implements OnInit {
-
+  
+  uploader:FileUploader = new FileUploader({url:uri});
+  adjuntos:any = [];
+  
+  
   
   @Output() appIncidente = new EventEmitter();
   filesToUpload: Array<File>;
   public cerrar : boolean = false;
   registerForm: FormGroup;
-  url = 'http://localhost:5500/';
-  adjunto:string = "";
-
 
   constructor(private _p: ProviderService, private fb: FormBuilder,
-    private _ls : LocalStorageService) { 
+    private _ls : LocalStorageService) {
+      
+      this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any)=>{
+        this.adjuntos.push(JSON.parse(response));
+      
+      }
     
       this.registerForm = this.fb.group({
       titulo:['', Validators.required],
@@ -31,6 +42,8 @@ export class IncidenteComponent implements OnInit {
       transaccion:[''],
       fecha_primer_reclamo: ['']
     });
+
+    
   }
 
   ngOnInit() {
@@ -42,85 +55,81 @@ export class IncidenteComponent implements OnInit {
   }
 
 
-  guardarIncidente(form:any){
-    
-    
-    console.log(form);
-
-    let payload: any = {};
-    payload.titulo = form.titulo;
-    payload.numeroSpring = form.numeroSpring;
-    payload.descripcion = form.descripcion;
-    payload.transaccion = form.transaccion;
-    payload.fecha_primer_reclamo = form.fecha_primer_reclamo;
-    payload.estado = "nuevo";
-    payload.adjunto = this.adjunto;
-    
-   
-    this._p.guardarIncidente(payload).subscribe(
-      data=>{
-        console.log(data);
-      },
-      error=>{
-        let mensaje:string = error.error.messagge;
-        console.log("este es el error:", error.error.messagge);
-        alertify.alert('Mensaje', mensaje);
-      },
-      ()=>{
-        alertify.alert('mensaje', 'Se ha dado de alta un nuevo incidente');
-        setTimeout(() => {
-          this.registerForm.reset();
-        }, 50);
-      }
-    );
-  }
-
-
-  subirArchivo(fileInput:any){
-    
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    if(this.filesToUpload){
+  private subirArchivos(){
+    return new Promise((resolve, reject)=>{
+      this.uploader.uploadAll();
       
-      this.makeFileRequest(this.url+'adjuntarArchivo', [], this.filesToUpload)
-      .then(
-        (result:any)=>{
-           alertify.alert('Mensaje', 'Nuevo archivo adjuntado');
-            this.adjunto = result;
-            
-        }
-      );
-    }
-  }
-
-
-
-  makeFileRequest(url:string, params: Array<string>, files:Array<File>){
-    let token = this._ls.getToken();
-    return new Promise(function(resolve, reject){
-      let formData:any = new FormData();
-      let xhr = new XMLHttpRequest();
-      for(let i = 0 ; i < files.length; i++){
-        formData.append('image', files[i], files[i].name);
-      }
-      xhr.onreadystatechange = function(){
-        if(xhr.readyState ==4){
-          
-          if(xhr.status == 200){
-            resolve(JSON.parse(xhr.response));
-          }else{
-            reject(xhr.response);
-          }
-          
-          
-        }
-      }   
-      xhr.open('POST', url, true);
-      xhr.setRequestHeader('Authorization',token);
-      xhr.send(formData);
+      resolve(true);
     });
   }
 
 
+  guardarIncidente(form:any){
 
 
+   this.subirArchivos().then(
+     ()=>{
+    
+    
+    setTimeout(() => {
+      
+     
+     
+      console.log("asi queda adjuntos", this.adjuntos)
+      let payload: any = {};
+      let array:string[]=[];
+      payload.titulo = form.titulo;
+      payload.numeroSpring = form.numeroSpring;
+      payload.descripcion = form.descripcion;
+      payload.transaccion = form.transaccion;
+      payload.fecha_primer_reclamo = form.fecha_primer_reclamo;
+      payload.estado = "nuevo";
+      
+      for(let item of this.uploader.queue){
+        array.push(moment().date()+'-'+moment().month()+'-'+moment().year()+'.'+ item.file.name);
+      }
+
+
+      payload.adjunto = array;
+
+      this._p.guardarIncidente(payload).subscribe(
+        data=>{
+          console.log(data);
+        },
+        err=>{
+         
+          let mensaje = err.error.messagge;
+          alertify.alert('Mensaje', mensaje);
+        },
+        ()=>{
+          setTimeout(() => {
+            alertify.alert('Mensaje', 'se ha dado de alta un nuevo incidente');
+          }, 1000);
+          
+          
+          
+          
+          this.registerForm.reset();
+          
+          document.getElementsByName("borrar").forEach((value:any)=>{
+            value.click();
+          });
+           
+          
+          
+        }
+      );
+
+
+    }, 1000);
+    
+     }
+   ).catch(
+     (err)=>{
+       console.log(err)
+     }
+   ); 
+    
+    
+  }
 }
