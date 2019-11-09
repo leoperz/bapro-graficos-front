@@ -12,10 +12,10 @@ import { WebsocketService } from 'src/app/services/websocket.service';
 export class LineChartComponent implements OnInit {
 
   public lineChartData: ChartDataSets[] = [
-    { data: [0, 0, 0, 0, 0], label: 'Incidentes' }
+    { data: [0,0,0,0,0,0,0,0,0,0,0,0], label: 'Incidentes' }
     
   ];
-  public lineChartLabels: Label[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'];
+  public lineChartLabels: Label[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
   public lineChartColors: Color[] = [
     {
@@ -37,7 +37,9 @@ export class LineChartComponent implements OnInit {
 
 
   getData(){
-    this.http.get('http://localhost:5500/lineChart').subscribe((data:any)=>this.lineChartData=data);
+    //this.http.get('http://localhost:5500/lineChart').subscribe((data:any)=>this.lineChartData=data);
+    this.http.get('http://localhost:5500/generarGraficosMensuales').subscribe((data:any)=>{});
+      
   }
 
 

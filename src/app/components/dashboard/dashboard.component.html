@@ -6,7 +6,7 @@
                     <div class="sidebar-brand-icon rotate-n-15">
                       
                     </div>
-                    <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                    <div class="sidebar-brand-text mx-3">BIP SUCURSALES INCIDENCIAS</div>
             </a>
             <hr class="sidebar-divider my-0">
             <li class="nav-item active">
@@ -28,9 +28,53 @@
                   <h6 class="collapse-header">Gestion de incidentes:</h6>
                   <a (click)="mostrarAltaIncidente(target)" class="collapse-item">Alta</a>
                   <a (click)="mostrarListaIncidentes(target2)" class="collapse-item">Asignar</a>
+                  <a (click)="mostrarListaIncidentesAsignados(target3)" class="collapse-item">Asignados</a>
+                 
+                  <a (click)="enviarMensaje()" class="collapse-item">Enviar mensaje</a>
                 </div>
               </div>
+              
             </li>
+
+            <!--Lista de usuarios conectados-->
+
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
+                
+                <i class="far fa-comment-dots"></i>
+                <span>Chat</span>
+              </a>
+              <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="desplazamiento" class="bg-white py-2 collapse-inner rounded">
+                  <h6 class="collapse-header">Usuarios conectados:</h6>
+                  
+                 <!-- <br>
+                  <li (click)="chat(item)" *ngFor="let item of usuariosActivos | async">
+                   <span style="color: Dodgerblue;"><i class="fas fa-user"></i></span>  
+                      {{item.nombre}}
+                   <br>
+                   <br>
+                  </li>-->
+
+
+                  <br>
+                  <li (click)="chat(item)" *ngFor="let item of usuariosActivosAux">
+                   <span style="color: Dodgerblue;"><i class="fas fa-user"></i></span>  
+                      {{item}}
+                   <br>
+                   <br>
+                  </li>
+
+                  
+                
+
+                </div>
+              </div>
+              
+            </li>
+
+
+            
     </ul>
 
     <!--Fin de SideBar-->
@@ -106,18 +150,18 @@
                   <h6 class="dropdown-header">
                     Centro de Notificaciones
                   </h6>
-                  <a class="dropdown-item d-flex align-items-center" href="#">
+                  <a *ngFor="let item of notificaciones" class="dropdown-item d-flex align-items-center" href="#">
                     <div class="mr-3">
                       <div class="icon-circle bg-primary">
                         <i class="fas fa-file-alt text-white"></i>
                       </div>
                     </div>
                     <div>
-                      <div class="small text-gray-500">December 12, 2019</div>
-                      <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                      <div class="small text-gray-500">{{item.fecha}}</div>
+                      <span class="font-weight-bold">{{item.mensaje}}</span>
                     </div>
                   </a>
-                  <a class="dropdown-item d-flex align-items-center" href="#">
+                 <!-- <a class="dropdown-item d-flex align-items-center" href="#">
                     <div class="mr-3">
                       <div class="icon-circle bg-success">
                         <i class="fas fa-donate text-white"></i>
@@ -138,8 +182,8 @@
                       <div class="small text-gray-500">December 2, 2019</div>
                       Spending Alert: We've noticed unusually high spending for your account.
                     </div>
-                  </a>
-                  <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                  </a>-->
+                  <a class="dropdown-item text-center small text-gray-500" href="#">Mostrar todas las notificaciones</a>
                 </div>
               </li>
 
@@ -248,12 +292,12 @@
         <div class="row">
 
             <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
+            <div data-aos="fade-right" class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Incidencias (Totales)</div>
+                      <div  class="text-xs font-weight-bold text-primary text-uppercase mb-1">Incidencias (Totales)</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">{{incidentesTotales}}</div>
                     </div>
                     <div class="col-auto">
@@ -265,7 +309,7 @@
             </div>
 
             <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
+            <div data-aos="fade-right" class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -282,7 +326,7 @@
             </div>
 
             <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
+            <div data-aos="flip-right" class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -308,7 +352,7 @@
             </div>
 
             <!-- Pending Requests Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
+            <div data-aos="flip-right" class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -379,19 +423,10 @@
           <!-- Card Body -->
           <div class="card-body">
             <div class="chart-pie pt-4 pb-2">
-              <canvas id="myPieChart"></canvas>
+              <app-pie-chart></app-pie-chart>
             </div>
-            <div class="mt-4 text-center small">
-              <span class="mr-2">
-                <i class="fas fa-circle text-primary"></i> Direct
-              </span>
-              <span class="mr-2">
-                <i class="fas fa-circle text-success"></i> Social
-              </span>
-              <span class="mr-2">
-                <i class="fas fa-circle text-info"></i> Referral
-              </span>
-            </div>
+
+          
           </div>
         </div>
       </div>
@@ -422,14 +457,29 @@
             <app-lista-incidentes (appListaIncidentes)=cerrarListaIncidentes($event)></app-lista-incidentes>
           </div>
     </section>
-    
+
+    <section #target3 style="padding-top: 10px;">
+      <div *ngIf="listaInicidentesAsignados">
+          <app-lista-incidentes-asignados (appListaIncidentesAsignados)=cerrarListaIncidentesAsignados($event)></app-lista-incidentes-asignados>
+        </div>
+   </section>
 
 
+  
+
+
+
+  
         
   </div>
     </div>
 
 
+</div>
+
+
+<div>
+ 
 </div>
 
 

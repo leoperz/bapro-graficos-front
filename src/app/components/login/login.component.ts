@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as alertify from 'alertifyjs';
 import { Observable } from 'rxjs';
+import { WebsocketService } from 'src/app/services/websocket.service';
 
 
 
@@ -80,6 +81,73 @@ export class NgbdModalContent implements OnInit{
 }
 
 
+@Component({
+  selector: 'ngbd-modal-content-equipos',
+  template: `
+    <div class="modal-header">
+      <h4 class="modal-title">Equipos!</h4>
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+    
+    <angular2-multiselect
+    [data]="itemList" 
+    [(ngModel)]="itemSeleccionado" 
+    [settings]="opciones">
+    </angular2-multiselect>
+    </div>
+    <div class="modal-footer">
+      <button id="close" type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cerrar</button>
+      <button type="button" class="btn btn-outline-primary" (click)="infoEquip()" > Aceptar </button>
+    </div>
+  `
+})
+export class NgbdModalContentEquipos implements OnInit{
+
+ 
+  itemList:any = [];
+  opciones = {};
+  itemSeleccionado=[];
+ 
+   ngOnInit(): void {
+
+   this.itemList = this._p.getEquiposMultiselect();
+     
+    this.opciones = {
+      text: "Selecciona uno o mas",
+      selectAllText: 'Selecionar Todos',
+      unSelectAllText: 'Deseleccionar',
+      classes: "myclass custom-class",
+      primaryKey: "alpha3Code",
+      labelKey: "name",
+      enableSearchFilter: true,
+      searchPlaceholderText:'Buscar',
+      searchBy: ['name']
+  };
+
+  
+   
+  }
+  
+
+
+  constructor(public activeModal: NgbActiveModal, private _p: ProviderService) {
+   
+  }
+
+  infoEquip(){
+    this._p.setListaEquipos(this.itemSeleccionado);
+    document.getElementById('close').click();
+  }
+
+
+  
+}
+
+
+
 
 
 @Component({
@@ -97,11 +165,14 @@ export class LoginComponent implements OnInit {
   recordame:any = false;
   tecnologias$: Observable<any[]>;
   tecnologias:any[]=[];
+  equipos$: Observable<any[]>;
+  equipos: any[]=[];
  
   constructor( private formBuilder: FormBuilder,
                private _provider: ProviderService,
                private _r: Router,
-               private modalService: NgbModal ) {
+               private modalService: NgbModal, 
+               private _ws: WebsocketService) {
 
                 }
 
@@ -115,13 +186,31 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit() {
+
+    this.equipos$ = this._provider.getEquipos$();
+    this.equipos$.subscribe(
+      (data:any[])=>{
+        let auxiliar:any[]=[];
+        if(data.length > 0){
+          
+          for(let item of data){
+            this.equipos.push(item.id);
+            auxiliar.push(item.name);
+          }
+        }
+        document.getElementById('texto2').setAttribute("value", auxiliar.toString());
+
+      }
+    );
+
+
     this.tecnologias$ = this._provider.getTecnologias$();
     this.tecnologias$.subscribe(
       (data:any[])=>{
         
         if(data.length > 0){
           for(let item of data){
-            console.log(item.item_text)
+            
             this.tecnologias.push(item.item_text)
           }
         }
@@ -143,8 +232,8 @@ export class LoginComponent implements OnInit {
       apellido: ['', Validators.required],
       numeroLegajo: ['', Validators.required],
       correo: ['', [Validators.required, Validators.email]],
-      equipo:['', Validators.required],
       tecnologias:[''],
+      equipo:[''],
       password: ['', Validators.required],
       confirmpassword: ['', Validators.required]
     },
@@ -191,6 +280,7 @@ loguearUsuario(){
     
       identity = result.usuario;
       token = result.token;
+      this._ws.emit('configurar-usuario', identity);                                                   
     },
     error=>{
       console.log("este es el mensaje del servidor",error.error.messagge);
@@ -227,6 +317,7 @@ loguearUsuario(){
 
 
 onSubmit() {
+  
   this.submitted = true;
   
   
@@ -239,7 +330,7 @@ onSubmit() {
   let json= {
     nombre: this.registerForm.controls.nombre.value,
     apellido: this.registerForm.controls.apellido.value,
-    equipo: this.registerForm.controls.equipo.value,
+    equipo: this.equipos,
     numeroLegajo: this.registerForm.controls.numeroLegajo.value,
     correo: this.registerForm.controls.correo.value,
     tecnologias: this.tecnologias,
@@ -276,6 +367,11 @@ open() {
   this.modalService.open(NgbdModalContent);
   
   
+}
+
+
+openEquipos(){
+  this.modalService.open(NgbdModalContentEquipos);
 }
 
 

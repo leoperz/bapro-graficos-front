@@ -31,7 +31,10 @@
                       </div>
                       <div class="col-md-6">
                           <h6>Tecnologias</h6>
-                          <a style="color: white" class="badge badge-dark badge-pill">{{identity.tecnologia}}</a>
+                          <span *ngFor="let item of identity.tecnologias">
+                            <a style="color: white" class="badge badge-dark badge-pill">{{item}}</a>
+                          </span>
+                          
                           
                           
                           <hr>
@@ -142,15 +145,7 @@
                     </div>
 
 
-                    <div class="form-group row">
-                      <label class="col-lg-3 col-form-label form-control-label">Equipo</label>
-                      <div class="col-lg-9">
-                          <input [ngClass]="{ 'is-invalid': submitted && f.equipo.errors }" formControlName="equipo" class="form-control" type="text" value="{{identity.equipo}}">
-                      </div>
-                      <div *ngIf="submitted && f.equipo.errors" class="invalid-feedback">
-                        <div *ngIf="f.equipo.errors.required">El Equipo es obligatorio</div>
-                    </div>
-                  </div>
+                    
 
 
                       <div class="form-group row">
@@ -166,15 +161,25 @@
                       </div>
 
                       <div class=" form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label">Equipos</label>
+                        <div class="col-lg-9">
+                            <angular2-multiselect  formControlName="equipos"
+                                [data]="itemList" 
+                                [(ngModel)]="itemSeleccionado" 
+                                [settings]="opciones">
+                            </angular2-multiselect>
+                          </div>
+                          
+                    </div>
+
+                      <div class=" form-group row">
                           <label class="col-lg-3 col-form-label form-control-label">Tecnologias</label>
                           <div class="col-lg-9">
                             <ng-multiselect-dropdown formControlName="tecnologias"
                             [placeholder]="'seleccionar una o mas'"
                             [data]="dropdownList"
                             [(ngModel)]="selectedItems"
-                            [settings]="dropdownSettings"
-                            
-                          >
+                            [settings]="dropdownSettings">
                           </ng-multiselect-dropdown>
                             </div>
                             
@@ -229,3 +234,11 @@
       </div>
   </div>
 </div>
+
+
+
+<ul class="list-group">
+        <li *ngFor="let item of usuariosActivos | async" class="list-group-item">
+          {{item.nombre}}
+        </li>
+      </ul>

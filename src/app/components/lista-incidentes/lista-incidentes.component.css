@@ -3,3 +3,7 @@
     width: 3rem;
   }
 
+.test{
+  display: flex;
+  justify-content: center;
+}

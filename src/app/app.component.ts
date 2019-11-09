@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
+import * as AOS from 'aos';
+import { WebsocketService } from './services/websocket.service';
 
 
 
@@ -11,14 +13,16 @@ import {Router} from '@angular/router';
 })
 export class AppComponent implements OnInit {
   
-  constructor(private _r : Router){
+  constructor(private _r : Router, private _ws: WebsocketService){
     
   }
 
   ngOnInit(): void {
-    console.log('ingresa en el app.components.ts');
+  this._ws.esucucharEvento('mensaje-privado').subscribe(data=>console.log('mensaje:',data));
+   AOS.init();
     if(localStorage.getItem('identity')){
       let identity = JSON.parse(localStorage.getItem('identity'));
+      this._ws.emit('configurar-usuario', identity);
       if(identity.recordame == false){
         localStorage.removeItem('identity');
         if(localStorage.getItem('token')){
@@ -29,6 +33,7 @@ export class AppComponent implements OnInit {
 
       }else{
         this._r.navigateByUrl('/dashboard');
+        this._ws.emit('configurar-usuario', identity);
       }
     }
 

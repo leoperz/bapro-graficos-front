@@ -1,0 +1,28 @@
+<h1>Mensajes</h1>
+<hr>
+<div class="row ">
+    <div class="col-md-2 lista">
+        <ul>
+          <li *ngFor="let item of usuariosActivos|async">
+            {{item.nombre}}
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-10">
+        
+          <div id="chat-mensajes">
+              <li class="list-group-item" *ngFor="let item of array">
+                <b>{{item.de}}:</b> {{item.mensaje}}
+              </li>
+            </div>
+            
+            <form (ngSubmit)="enviar()">
+              <input id="chat-input" type="text" [(ngModel)]="mensaje" class="form-control" 
+                     name="mensaje" placeholder="Escribir..." autofocus autocomplete="off">
+            
+            </form>
+      
+      </div>
+</div>
+
+

@@ -118,14 +118,12 @@
 			
 
 				<div class="wrap-input100  m-b-16 form-group">
-						<input class="input100 form-control" formControlName="equipo" type="text" placeholder="Equipo de trabajo" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.equipo.errors }">
+						<input value="" id="texto2" (click)="openEquipos()" class="input100 form-control" type="text" placeholder="Equipo de trabajo" autocomplete="off">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<span class="lnr lnr-envelope"></span>
 						</span>
-						<div *ngIf="submitted && f.equipo.errors" class="invalid-feedback">
-								<div *ngIf="f.equipo.errors.required">El Equipo es obligatorio</div>
-						</div>
+						
 				</div>
 
 

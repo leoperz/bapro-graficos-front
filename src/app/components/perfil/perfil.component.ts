@@ -4,8 +4,10 @@ import {mustMatch} from '../login/funcion';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { ProviderService } from 'src/app/services/provider.service';
 import * as alertify from 'alertifyjs';
-import { identity } from 'rxjs';
+import {Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
   selector: 'app-perfil',
@@ -13,21 +15,31 @@ import { Router } from '@angular/router';
   styleUrls: ['./perfil.component.css']
 })
 export class PerfilComponent implements OnInit {
-  
+  usuariosActivos: Observable<any>;
   filesToUpload: Array<File>;
   identity:any;
   token:any;
   url = 'http://localhost:5500/';
   urlGetImagen = 'http://localhost:5500/obtenerImagen/';
   dropdownList = [];
-  dropdownSettings = {};
-  selectedItems=[];
+  settings = {};
+  dropdownSettings={};
+  itemList:any = [];
+  opciones = {};
+  itemSeleccionado=[];
+ 
+  selectedItems = [];
   registerForm: FormGroup;
   submitted = false;
+  equipos$: Observable<any[]>;
 
   constructor(private _ls: LocalStorageService, private fb: FormBuilder, 
-              private _p: ProviderService, private _r: Router ) {
+              private _p: ProviderService, private _r: Router , private http: HttpClient,
+              private _ws : WebsocketService) {
+
+               
     this.identity = _ls.getIdentity();
+    
     this.token = _ls.getToken();
 
     
@@ -36,7 +48,7 @@ export class PerfilComponent implements OnInit {
       apellido: ['', Validators.required],
       numeroLegajo: ['', Validators.required],
       correo: ['', [Validators.required, Validators.email]],
-      equipo:['', Validators.required],
+      equipos:[''],
       tecnologias:[''],
       password: ['', Validators.required],
       confirmpassword: ['', Validators.required]
@@ -50,6 +62,25 @@ export class PerfilComponent implements OnInit {
    }
 
    ngOnInit(): void {
+     
+    this.usuariosActivos = this._ws.esucucharEvento('usuarios-activos');
+      this.itemList = this._p.getEquiposMultiselect();
+      
+
+        this.opciones = {
+          text: "Selecciona uno o mas",
+          selectAllText: 'Selecionar Todos',
+          unSelectAllText: 'Deseleccionar',
+          classes: "myclass custom-class",
+          primaryKey: "alpha3Code",
+          labelKey: "name",
+          enableSearchFilter: true,
+          searchPlaceholderText:'Buscar',
+          searchBy: ['name']
+      };  
+   
+
+    
     this.dropdownList = [
       { item_id: 1, item_text: 'Mule' },
       { item_id: 2, item_text: 'Javascript' },
@@ -58,6 +89,7 @@ export class PerfilComponent implements OnInit {
       
     ];
 
+    
 
     this.dropdownSettings = {
       singleSelection: false,
@@ -66,7 +98,8 @@ export class PerfilComponent implements OnInit {
       selectAllText: 'Seleccionar todo',
       unSelectAllText: 'Deseleccionar',
       itemsShowLimit: 3,
-      allowSearchFilter: true
+      allowSearchFilter: true,
+      searchPlaceholderText:'Buscar'
     };
   }
 
@@ -83,20 +116,22 @@ export class PerfilComponent implements OnInit {
 
   auxiliar.nombre = form.nombre == "" ? this.identity.nombre : form.nombre;
   auxiliar.apellido = form.apellido =="" ? this.identity.apellido : form.apellido;
-  auxiliar.equipo = form.equipo =="" ? this.identity.equipo : form.equipo;
   auxiliar.numeroLegajo = form.numeroLegajo == "" ? this.identity.numeroLegajo : form.numeroLegajo;
-  auxiliar.correo = form.correo == "" ? this.identity.numeroLegajo : form.correo; 
+  auxiliar.correo = form.correo == "" ? this.identity.correo : form.correo; 
   auxiliar.tecnologias = this.selectedItems.length >0 ? this.selectedItems : this.identity.tecnologias;
+  auxiliar.equipos = this.itemSeleccionado.length >0 ? this.itemSeleccionado : this.identity.equipo;
+  
   
 
   if(form.password != ""){
     auxiliar.password = form.password;
   
   }
+  
   this._p.actualizarUsuario(auxiliar).subscribe(
     
     (result:any)=>{
-      console.log("dato que trae el back:",result);
+      
 
        //Hay que generar de nuevo el identity y el token.
        if(localStorage.getItem('identity')){
@@ -127,14 +162,14 @@ export class PerfilComponent implements OnInit {
 
   
   subirArchivo(fileInput:any){
-    console.log(this.identity);
+   
     this.filesToUpload = <Array<File>>fileInput.target.files;
     if(this.filesToUpload){
       
       this.makeFileRequest(this.url+'subirImagen/'+this.identity._id, [], this.filesToUpload)
       .then(
         (result:any)=>{
-          console.log("asi queda result =>",result);
+          
           // hay que actualizar identity y el localStorage
           this.identity.imagen = result.imagen;
           
@@ -178,6 +213,7 @@ export class PerfilComponent implements OnInit {
  iraDashboard(){
    this._r.navigateByUrl('/dashboard');
  }
+
 
 
 }

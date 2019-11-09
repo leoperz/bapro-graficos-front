@@ -2,6 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { LocalStorageService } from './local-storage.service';
 import { Subject } from 'rxjs';
+import { stringify } from '@angular/core/src/render3/util';
 
 
 @Injectable({
@@ -10,8 +11,10 @@ import { Subject } from 'rxjs';
 export class ProviderService implements OnInit {
 
  private tecnologias$ = new Subject<any[]>();
+ private equipos$ = new Subject<any[]>();
  url:string = 'http://localhost:5500/'
  listaTecnologias:any[] =[];
+ listaEquipos:any[] = [];
 
   constructor(private _http : HttpClient, private _l: LocalStorageService) { 
   
@@ -24,7 +27,9 @@ export class ProviderService implements OnInit {
   }
 
   
-
+test(){
+  console.log('prueba');
+}
 
  
 
@@ -73,6 +78,20 @@ export class ProviderService implements OnInit {
   }
 
 
+
+  getEquiposMultiselect(){
+    let array = [];
+    this._http.get(this.url+'equipos').subscribe(
+      (data:any[])=>{
+        for(let {item,index} of data.map((item, index)=>({item ,index}))){
+          array.push({name:item.nombre, alpha3Code:index+1, id:item._id});
+        }
+      }
+    );
+    return array;
+  }
+
+
   asignarIncidente(json:any){
     return this._http.post(this.url+'asignarIncidente', json);
   }
@@ -84,12 +103,20 @@ export class ProviderService implements OnInit {
 
  downloadFile(file:String){
    let body = {filename:file};
-
+    console.log(body);
    return this._http.post(this.url+'download', body, {
      responseType:'blob',
      headers: new HttpHeaders().append('Content-Type', 'application/json')
    });
  }
+
+
+ descargarDocumento(file:string){
+    return this._http.get(this.url+'descargarDocumento'+'/'+file);
+ }
+
+
+
 
  setListaTecnologias(array:any[]){
   for(let item of array){
@@ -98,9 +125,60 @@ export class ProviderService implements OnInit {
   this.tecnologias$.next(this.listaTecnologias);
  }
 
+
+ setListaEquipos(array:any[]){
+  for(let item of array){
+    this.listaEquipos.push(item);
+    
+  }
+  
+  this.equipos$.next(this.listaEquipos);
+ }
+
+
+ getUsuariosActivos(){
+   return this._http.get(this.url+'usuariosActivos');
+ }
+
+
+
+
+
  getTecnologias$(){
    return this.tecnologias$.asObservable();
  }
+
+ getEquipos$(){
+  return this.equipos$.asObservable();
+}
+
+getInicidentesAsigados(ids:any){
+  
+  return this._http.get(this.url+'incidentesAsignados'+'/'+ids);
+
+}
+
+getEquiposPorId(ids:string[]){
+  
+  return this._http.post(this.url+'getEquiposPorId', ids);
+}
+
+cambiarEstadoIncidente(id:string, estado:string){
+  
+  let payload = {
+    id:id,
+    estado:estado
+  }
+  return this._http.post(this.url+'cambiarEstadoIncidente',payload);
+}
+
+guardarRechazados(payload:any){
+  console.log(payload);
+  return this._http.post(this.url+'guardarRechazados', payload);
+  
+}
+
+
 
 
 }

@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core';
 import {Socket} from 'ngx-socket-io';
+import { Subscription } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebsocketService {
 
+  array:[]=[];
   public status = false;
+  
 
   constructor(private _socket : Socket) {
     this.chequearConexion();
+    this.chequearDesconexion();
    }
 
    
@@ -18,7 +23,7 @@ export class WebsocketService {
    chequearConexion(){
      this._socket.on('connect', ()=>{
       this.status=true;
-      console.log(this.status);
+      
      });
    }
    chequearDesconexion(){
@@ -33,16 +38,25 @@ export class WebsocketService {
    //metodo generico para emitir un mensaje mediante socket
 
    emit(evento: string, payload?:any, callback?:Function){
+     
       this._socket.emit(evento, payload, callback);
+      
    }
 
 
 
    //metodo generico para esuchar cualquier evento en el server
    
-   esucucharEvento(evento:string){
+   esucucharEvento(evento:string, email?:string){
     return this._socket.fromEvent(evento);
    }
 
-  }
+   
+    
+   }
+
+
+  
+
+  
 

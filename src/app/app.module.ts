@@ -7,7 +7,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { LoginComponent, NgbdModalContent} from './components/login/login.component';
+import { LoginComponent, NgbdModalContent, NgbdModalContentEquipos} from './components/login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import {MatInputModule, MatButtonModule} from '@angular/material';
@@ -18,6 +18,16 @@ import {FileUploadModule} from 'ng2-file-upload';
 import { ListaIncidentesComponent } from './components/lista-incidentes/lista-incidentes.component';
 import {LineChartComponent} from './components/line-chart/line-chart.component';
 import { UploadComponent } from './components/upload/upload.component';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
+import { PieChartComponent } from './components/pie-chart/pie-chart.component';
+import { MensajeComponent } from './components/mensaje/mensaje.component';
+import { ListaIncidentesAsignadosComponent } from './components/lista-incidentes-asignados/lista-incidentes-asignados.component';
+import {DataTablesModule} from 'angular-datatables';
+
+
+
+
+
 
 
 
@@ -34,7 +44,13 @@ const config: SocketIoConfig = {url:'http://localhost:5500', options:{}};
     ListaIncidentesComponent,
     LineChartComponent,
     UploadComponent,
-    NgbdModalContent
+    NgbdModalContent,
+    NgbdModalContentEquipos,
+    PieChartComponent,
+    MensajeComponent,
+    ListaIncidentesAsignadosComponent
+    
+    
 
     
   ],
@@ -51,7 +67,10 @@ const config: SocketIoConfig = {url:'http://localhost:5500', options:{}};
     BrowserAnimationsModule,
     MatButtonModule,
     NgbModule,
-    FileUploadModule
+    FileUploadModule,
+    AngularMultiSelectModule,
+    DataTablesModule
+    
     
     
    
@@ -59,6 +78,6 @@ const config: SocketIoConfig = {url:'http://localhost:5500', options:{}};
  
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents:[NgbdModalContent]
+  entryComponents:[NgbdModalContent, NgbdModalContentEquipos]
 })
 export class AppModule { }

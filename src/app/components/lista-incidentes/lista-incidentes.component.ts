@@ -3,8 +3,6 @@ import { ProviderService } from 'src/app/services/provider.service';
 import * as alertify from 'alertifyjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { HttpClient } from '@angular/common/http';
-
-
 import {saveAs} from 'file-saver';
 
 
@@ -31,7 +29,7 @@ export class ListaIncidentesComponent implements OnInit {
 
   
   
-  constructor(private _p : ProviderService, private socket : WebsocketService, private _http : HttpClient,
+  constructor(private _p : ProviderService, private _w : WebsocketService, private _http : HttpClient,
                 ) {
     this.incidentesNuevos();
     console.log(this.incidentes);
@@ -91,6 +89,12 @@ export class ListaIncidentesComponent implements OnInit {
       data=>{
         alertify.alert('Mensaje', 'Incidente asignado correctamente');
         
+        let objeto={
+          mensaje:'Se ha asignado un nuevo incidente al equipo',
+          sala: payload._idEquipo
+        }
+        this._w.emit('mensaje-sala', objeto);
+        
       
 
       },
@@ -104,7 +108,7 @@ export class ListaIncidentesComponent implements OnInit {
 
 
 escucharEvento(){
-  this.socket.esucucharEvento('incidentes-nuevos').subscribe(
+  this._w.esucucharEvento('incidentes-nuevos').subscribe(
     data=>{
       //ejecuto nuevamente la busqueda de los incidentes nuevos
       console.log(data);

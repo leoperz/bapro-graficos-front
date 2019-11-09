@@ -23,6 +23,10 @@
                       </div>
                       
                     </a>
+                    <div *ngIf="incidentes.length < 1" style="text-align: center;">
+                      <h6>NO HAY INCIDENTES PARA MOSTRAR</h6>
+                    </div>
+                    
                     <hr>
                     <button  style="margin-left: 10px ; margin-bottom: 10px" mat-raised-button color="primary" (click)="cerrarComponente()">Cerrar lista</button>
                     
@@ -74,7 +78,7 @@
               <div *ngIf="incidente.adjunto !='' "  class="col-8">
                 
                 <p>
-                    <a>
+                    <a onmouseover="" style="cursor: pointer;">
                       <img (click)="download(incidente)" src="../../../assets/imagenes/clip.png" style="width: 40px ; height: 35px;"  width="104" height="142">
                     </a>
   
@@ -91,9 +95,17 @@
   
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-primary" (click)="asignarIncidente(incidente._id)" data-dismiss="modal">Asignar</button>
+         
+         
+          
+          <div class="modal-footer test" style="align-content: center">
+            
+            
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="asignarIncidente(incidente._id)" data-dismiss="modal">Asignar</button>
+
+           
+           
           </div>
         
         </div>
@@ -101,6 +113,8 @@
     </div>
     
   </div>
+ 
+
 
 
                   

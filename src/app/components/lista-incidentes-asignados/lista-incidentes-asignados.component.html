@@ -1,0 +1,178 @@
+
+<div  class="container" style="background: #F0F1F4" class="shadow animated--grow-in" aria-labelledby="messagesDropdown">
+
+<h6  class="dropdown-header" style="background-color: #673AB7; color: white">
+    <!--Mensajes-->
+    Incidentes Asignados
+  </h6>
+<br>
+<div *ngIf="array.length > 0; else other">
+<table datatable [dtOptions]="dtOptions"  class="table table-hover table-striped table-bordered" cellspacing="0"
+width="100%" [dtTrigger]="dtTriggers">
+    <thead>
+        <tr style="text-align: center;">
+            <th>Titulo</th>
+            <th>Descripcion</th>
+            <th>Fecha Alta</th>
+            <th>Adjuntos</th>
+            <th>Accion</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of array" style="text-align: center;">
+           <td>{{item.incidente.titulo}}</td>
+           <td>{{item.incidente.descripcion | slice:0:20}}...</td>
+           <td>{{item.incidente.fechaAlta.dia}}/{{item.incidente.fechaAlta.mes}}/{{item.incidente.fechaAlta.anio}}</td>
+           <td *ngIf="item.incidente.adjunto.length == 0 ; else adjunto">NO</td>
+           
+           <ng-template #adjunto>
+               <td>SI</td>
+           </ng-template>
+           
+           <td>
+             <button  (click)="verIncidente(item)" type="button"><i class="fas fa-glasses"></i></button>
+             <button type="button"><i class="fas fa-check-circle"></i></button> 
+             <button (click)="enviarMensaje(item)" type="button"><i class="fas fa-times"></i></button>
+            
+           </td>
+              
+        </tr>
+    
+       
+    </tbody>
+    <tfoot>
+        <tr style="text-align: center;">
+                <th>Titulo</th>
+                <th>Descripcion</th>
+                <th>Fecha Alta</th>
+                <th>Adjuntos</th>
+                <th>Accion</th>
+                
+
+        </tr>
+    </tfoot>
+</table>
+</div>
+<ng-template #other>
+    <h6>NO HAY INCIDENTES ASIGNADOS</h6>
+</ng-template>
+<br>
+
+
+<button  style="margin-left: 10px ; margin-bottom: 10px" mat-raised-button color="primary" (click)="cerrarComponente()">Cerrar lista</button>
+<button *ngIf="identity.length > 1" style="margin-left: 10px ; margin-bottom: 10px"
+         mat-raised-button color="primary" 
+         data-toggle="modal"
+         data-target="#exampleModal"
+         >Cambiar equipo 
+        </button>
+
+
+<h6  class="dropdown-header" style="background-color: #673AB7; color: white">
+    <!--Mensajes-->
+    Incidentes Asignados
+  </h6>
+
+</div>
+
+<!--Boton oculto para disparar el modal-->
+<button id="btnOculto" type="button" data-toggle="modal" data-target="#exampleModal" style="display: none"></button>
+<button id="btnOculto2" type="button" data-toggle="modal" data-target="#exampleModal2" style="display: none"></button>
+
+ <!--Modal para la seleccion de equipos a los que pertenece el usuario
+      Esto es para que elija que incidentes asignado quiere ver-->
+
+
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Seleccione un equipo</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              
+                    <select  [(ngModel)]="_idEquipo">
+                        <option *ngFor="let item of equipos" [value]= "item._id">{{item.nombre}}</option>
+                    </select>
+            </div>
+              <div class="modal-footer">
+              <button id="" data-dismiss="modal" type="button" class="btn btn-primary">Cancelar</button>
+              <button data-dismiss="modal" (click)="cargarTabla()" type="button" class="btn btn-secondary">Aceptar</button>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+  <!--Fin del Modal de seleccion de equipos-->   
+
+
+
+
+
+
+  <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Incidente seleccionado</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                
+              
+               <table class="table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Titulo:</th>
+                            <td>{{incidente.titulo}}</td>
+                        </tr>
+                        <tr>
+                                <th scope="row">Descripcion:</th>
+                                <td>{{incidente.descripcion}}</td>
+                        </tr>
+                        <tr>
+                                <th scope="row">Fecha Alta:</th>
+                                <td>{{incidente.fechaAlta.dia}}/{{incidente.fechaAlta.mes}}/{{incidente.fechaAlta.anio}}</td>
+                        </tr>
+
+                        <tr>
+                                <th scope="row">Fecha Aparicion:</th>
+                                <td>{{incidente.fechaAparicion.dia}}/{{incidente.fechaAparicion.mes}}/{{incidente.fechaAparicion.anio}}</td>
+                        </tr>
+
+                        <tr>
+                          <th scope="row">Asignado Por:</th>
+                          <td>{{incidente.usuario.nombre}} {{incidente.usuario.apellido}}</td>
+                      </tr>
+
+                        <tr *ngIf="incidente.adjunto.length > 0">
+                                <th scope="row">Adjunto:</th>
+                                <td><i (click)="download(incidente.adjunto)" class="fas fa-download"></i></td>
+                                
+                        </tr>
+                       
+                        
+
+                    </tbody>
+                </table>
+                    
+            </div>
+              <div class="modal-footer">
+              <button id="" data-dismiss="modal" type="button" class="btn btn-primary">Cancelar</button>
+              <button data-dismiss="modal" (click)="cargarTabla()" type="button" class="btn btn-secondary">Aceptar</button>
+              
+            </div>
+          </div>
+        </div>
+      </div>

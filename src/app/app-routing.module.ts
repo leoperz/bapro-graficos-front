@@ -6,6 +6,7 @@ import { DashboardGuardService } from './guards/dashboard-guard.service';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { IncidenteComponent } from './components/incidente/incidente.component';
 import {ListaIncidentesComponent} from './components/lista-incidentes/lista-incidentes.component';
+import {MensajeComponent} from './components/mensaje/mensaje.component';
 
 const appRoutes: Routes = [
   {path: 'inicio', component: LoginComponent},
@@ -13,6 +14,7 @@ const appRoutes: Routes = [
   {path: 'perfil', component: PerfilComponent},
   {path:'incidente', component: IncidenteComponent},
   {path:'listaIncidentes', component: ListaIncidentesComponent},
+  {path:'mensaje', component: MensajeComponent},
   {path:'**', component:LoginComponent}
 ];
 

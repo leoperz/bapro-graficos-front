@@ -1,0 +1,15 @@
+#chat-mensajes{
+    height: 300px;
+    border: 1px solid gray;
+    overflow-y: scroll;
+}
+
+#chat-input{
+    margin-top: 10px;
+}
+
+.lista{
+    border: 1px solid gray;
+    height: 300px;
+    
+}   

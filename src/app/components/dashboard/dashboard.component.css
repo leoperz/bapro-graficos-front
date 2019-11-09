@@ -12010,4 +12010,30 @@
   body.sidebar-toggled footer.sticky-footer {
     width: 100%;
   }
+
+
+  .fa-circle{
+    color:green;
+  }
   
+
+  #desplazamiento{
+    height: 300px;
+    overflow-y: scroll;
+  }
+
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #2B52C5; 
+    border-radius: 10px;
+  }
