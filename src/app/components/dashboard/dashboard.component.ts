@@ -27,6 +27,7 @@ export class DashboardComponent implements OnInit {
   altaIncidente:boolean = false;
   listaIncidentes: boolean = false;
   listaInicidentesAsignados: boolean = false;
+  listaInicidentesRechazados: boolean = false;
   incidentesNuevos:number=0;
   incidentesResueltos:number=0;
   incidentesAsignados:number=0;
@@ -141,6 +142,17 @@ export class DashboardComponent implements OnInit {
       $element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
     }, 300);
   }
+
+
+  mostrarListaIncidentesRechazados($element){
+    this.listaInicidentesRechazados = true;
+    setTimeout(() => {
+      $element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+    }, 300);
+  }
+
+
+
 
   cerrarIncidente(respuesta:any){
     this.altaIncidente = respuesta;

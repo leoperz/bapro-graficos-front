@@ -23,6 +23,7 @@ import { PieChartComponent } from './components/pie-chart/pie-chart.component';
 import { MensajeComponent } from './components/mensaje/mensaje.component';
 import { ListaIncidentesAsignadosComponent } from './components/lista-incidentes-asignados/lista-incidentes-asignados.component';
 import {DataTablesModule} from 'angular-datatables';
+import { ListaInicidentesRechazadosComponent } from './components/lista-inicidentes-rechazados/lista-inicidentes-rechazados.component';
 
 
 
@@ -48,7 +49,8 @@ const config: SocketIoConfig = {url:'http://localhost:5500', options:{}};
     NgbdModalContentEquipos,
     PieChartComponent,
     MensajeComponent,
-    ListaIncidentesAsignadosComponent
+    ListaIncidentesAsignadosComponent,
+    ListaInicidentesRechazadosComponent
     
     
 

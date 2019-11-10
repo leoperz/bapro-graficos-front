@@ -29,6 +29,7 @@
                   <a (click)="mostrarAltaIncidente(target)" class="collapse-item">Alta</a>
                   <a (click)="mostrarListaIncidentes(target2)" class="collapse-item">Asignar</a>
                   <a (click)="mostrarListaIncidentesAsignados(target3)" class="collapse-item">Asignados</a>
+                  <a (click)="mostrarListaIncidentesRechazados(target4)" class="collapse-item">Rechazados</a>
                  
                   <a (click)="enviarMensaje()" class="collapse-item">Enviar mensaje</a>
                 </div>
@@ -463,6 +464,12 @@
           <app-lista-incidentes-asignados (appListaIncidentesAsignados)=cerrarListaIncidentesAsignados($event)></app-lista-incidentes-asignados>
         </div>
    </section>
+
+   <section #target4 style="padding-top: 10px;">
+    <div *ngIf="listaInicidentesRechazados">
+        <app-lista-inicidentes-rechazados (appListaIncidentesRechazados)=cerrarListaIncidentesRechazados($event)></app-lista-inicidentes-rechazados>
+      </div>
+  </section>
 
 
   

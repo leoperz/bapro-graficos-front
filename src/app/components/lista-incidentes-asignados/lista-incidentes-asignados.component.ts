@@ -16,7 +16,6 @@ export class ListaIncidentesAsignadosComponent implements OnInit, OnDestroy{
 @Output() appListaIncidentesAsignados = new EventEmitter();
 
 prompt:string;
-element: HTMLElement;
 dtOptions: DataTables.Settings = {};
 dtTriggers: Subject<any> = new Subject();
 flag:string="";
