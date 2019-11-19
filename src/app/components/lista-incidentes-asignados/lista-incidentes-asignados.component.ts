@@ -47,6 +47,7 @@ incidente:any = {
   constructor(private _p: ProviderService, private _ls: LocalStorageService ) {}
 
   ngOnInit() {
+    
     this.identity = this._ls.getIdentity().equipo;
     
     
@@ -59,15 +60,15 @@ incidente:any = {
        this.equipos = result;
        
         });
-
-        
-
-    
-      
-        document.getElementById('btnOculto').click();
-      
-      
+       document.getElementById('btnOculto').click();
+    }else{
+      this._p.getInicidentesAsigados(this.identity).subscribe(
+        (result:[])=>{
+          this.array = result;
+        }
+      );
     }
+
     
     
     this.dtOptions = {
@@ -107,8 +108,10 @@ incidente:any = {
   }
 
   cargarTabla(){
+    console.log("entra a cargar tabla en incidentes asignados");
     this._p.getInicidentesAsigados(this._idEquipo).subscribe((data:[])=>{
       this.array = data;
+      console.log(this.array);
       
     });
     

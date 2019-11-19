@@ -13,8 +13,8 @@
                         <div class="status-indicator bg-success"></div>
                       </div>
                       <div class="font-weight-bold">
-                        <div class="text-truncate">{{item.descripcion}}</div>
-                        <div class="small text-gray-500">{{item.titulo}}
+                        <div class="text-truncate">{{item.titulo}}</div>
+                        <div class="small text-gray-500">{{item.descripcion | slice:0:80}}...
                         
                          
                           <i *ngIf="item.adjunto !='' " class="fas fa-paperclip"></i>
