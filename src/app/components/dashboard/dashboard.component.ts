@@ -12,6 +12,7 @@ import * as moment from 'moment';
 
 
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -35,6 +36,7 @@ export class DashboardComponent implements OnInit {
   incidentesTotales:number=0;
   porcentaje=35;
   notificaciones:any[]=[];
+  count:number=0;
   
 
   constructor(private _ls: LocalStorageService, private _r : Router,
@@ -43,6 +45,13 @@ export class DashboardComponent implements OnInit {
    
                 this.usuarioLogueado = this._ls.getIdentity();
                 this.incidentesPorEstado();
+                this._p.conditionNotifications({_id:this.usuarioLogueado._id}).subscribe(
+                  (data:[])=>{
+                    this.notificaciones=data;
+                    this.count=data.length;
+                  }
+                );
+                
                 
                 
    
@@ -93,8 +102,11 @@ export class DashboardComponent implements OnInit {
 
    this._ws.esucucharEvento('mensaje-sala-srv').subscribe(
      (data:any)=>{
-       data.fecha=moment().locale('es').format("MMMM DD, YYYY"); 
+       data.fecha=moment().locale('es').format("MMMM DD, YYYY HH:mm:ss"); 
+       data.usuario = this.identity._id
        this.notificaciones.push(data);
+       this.count++;
+       this.guardarNotificaciones(data);
      }
    );
 
@@ -208,6 +220,31 @@ export class DashboardComponent implements OnInit {
   chat(item:any){
     
     this._ws.emit('mensaje', item);
+  }
+
+  limpiarNotificaciones(){
+    this.notificaciones=[];
+    this.count=0;
+  }
+
+  guardarNotificaciones(payload:any){
+    this._p.guardarNotificacion(payload).subscribe(
+      data=>{
+        console.log(data);
+      }
+    );
+  }
+
+  notificacion(item:any){
+    if(item.mensaje=="Se ha asignado un nuevo incidente al equipo"){
+      document.getElementById("asignados").click();
+      let aux = this.notificaciones.indexOf(item);
+      this.notificaciones.splice(aux,1);
+      this.count--;
+      //ahora debo marcarlo como leido en la base de datos.
+      this._p.modificarNotificacion(item).subscribe();
+    }
+    
   }
 }
 

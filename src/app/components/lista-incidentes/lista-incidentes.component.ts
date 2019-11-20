@@ -31,21 +31,27 @@ export class ListaIncidentesComponent implements OnInit {
   
   constructor(private _p : ProviderService, private _w : WebsocketService, private _http : HttpClient,
                 ) {
-    
+    this.incidentesNuevos();
     
     
    }
 
   ngOnInit() {
-    this.incidentesNuevos();
+    
     this._p.getEquipos().subscribe(
       (data:[])=>{
         this.equipos = data;
       }
     );
     this.escucharEvento();
-    
+    this._w.esucucharEvento('mensaje-sala-srv').subscribe(
+      (data:any)=>{
+        this.incidentes = data.incidentes;
+      }
+    );
   }
+
+
 
   cargarDatos(item:any) {
     this.incidente = item;
@@ -84,9 +90,24 @@ export class ListaIncidentesComponent implements OnInit {
 
     this._p.asignarIncidente(payload).subscribe(
       data=>{
-        console.log("asi queda data =>",data);
-        },
-    
+        alertify.alert('Mensaje', 'Incidente asignado correctamente');
+        this.incidentesNuevos();
+        
+        let objeto={
+          mensaje:'Se ha asignado un nuevo incidente al equipo',
+          sala: payload._idEquipo,
+          incidentes:this.incidentes
+        }
+        
+        this._w.emit('mensaje-sala', objeto);
+        
+      
+
+      },
+      error=>{
+        console.log(error);
+        alertify.alert('Mensaje', 'No se ha podido asignar el incidente');
+      }
     );
     
 
@@ -120,8 +141,8 @@ download(incidente:any){
     );
 
   }
-     
-    
+  
+  
   }
   
 

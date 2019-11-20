@@ -27,8 +27,8 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                   <h6 class="collapse-header">Gestion de incidentes:</h6>
                   <a (click)="mostrarAltaIncidente(target)" class="collapse-item">Alta</a>
-                  <a (click)="mostrarListaIncidentes(target2)" class="collapse-item">Asignar</a>
-                  <a (click)="mostrarListaIncidentesAsignados(target3)" class="collapse-item">Asignados</a>
+                  <a id="asignar" (click)="mostrarListaIncidentes(target2)" class="collapse-item">Asignar</a>
+                  <a id="asignados" (click)="mostrarListaIncidentesAsignados(target3)" class="collapse-item">Asignados</a>
                   <a (click)="mostrarListaIncidentesRechazados(target4)" class="collapse-item">Rechazados</a>
                  
                   <a (click)="enviarMensaje()" class="collapse-item">Enviar mensaje</a>
@@ -144,20 +144,20 @@
                 <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-bell fa-fw"></i>
                   <!-- Counter - Alerts -->
-                  <span class="badge badge-danger badge-counter">3+</span>
+                  <span class="badge badge-danger badge-counter">{{count}}</span>
                 </a>
                 <!-- Notificaciones -->
                 <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                   <h6 class="dropdown-header">
                     Centro de Notificaciones
                   </h6>
-                  <a *ngFor="let item of notificaciones" class="dropdown-item d-flex align-items-center" href="#">
+                  <a *ngFor="let item of notificaciones" class="dropdown-item d-flex align-items-center">
                     <div class="mr-3">
                       <div class="icon-circle bg-primary">
                         <i class="fas fa-file-alt text-white"></i>
                       </div>
                     </div>
-                    <div>
+                    <div (click)="notificacion(item)">
                       <div class="small text-gray-500">{{item.fecha}}</div>
                       <span class="font-weight-bold">{{item.mensaje}}</span>
                     </div>
@@ -185,6 +185,7 @@
                     </div>
                   </a>-->
                   <a class="dropdown-item text-center small text-gray-500" href="#">Mostrar todas las notificaciones</a>
+                  <a (click)="limpiarNotificaciones()" class="dropdown-item text-center small text-gray-500" href="#">Limpiar notificaciones</a>
                 </div>
               </li>
 

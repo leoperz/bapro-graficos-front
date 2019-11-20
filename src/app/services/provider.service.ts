@@ -153,7 +153,7 @@ test(){
 }
 
 getInicidentesAsigados(ids:any){
-  
+  console.log("este es el id del equipo =>", ids);
   return this._http.get(this.url+'incidentesAsignados'+'/'+ids);
 
 }
@@ -189,7 +189,27 @@ removerIncidenteAsignado(id){
   return this._http.post(this.url+'removerIncidenteAsignado', payload);
 
   }
+
+  guardarNotificacion(payload:any){
+    console.log("que payload viene",payload);
+    return this._http.post("http://localhost:5500/guardar_notificacion", payload);
+  }
+  
+  allNotifications(){
+    return this._http.get(this.url+'allNotifications');
+  }
+  
+  conditionNotifications(payload){
+    console.log("entra a conditionNotifications", payload);
+    return this._http.post(this.url+'conditionNotifications', payload);
+  }
+  
+  modificarNotificacion(payload){
+    console.log(payload);
+    return this._http.post(this.url+'modificarNotificacion', payload);
+  }
 }
+
 
 
 
