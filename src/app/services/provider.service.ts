@@ -2,7 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { LocalStorageService } from './local-storage.service';
 import { Subject } from 'rxjs';
-import { stringify } from '@angular/core/src/render3/util';
+
 
 
 @Injectable({
@@ -158,6 +158,10 @@ getInicidentesAsigados(ids:any){
 
 }
 
+getIncidentesRechazados(){
+  return this._http.get(this.url+'incidentesRechazados');
+}
+
 getEquiposPorId(ids:string[]){
   
   return this._http.post(this.url+'getEquiposPorId', ids);
@@ -178,7 +182,15 @@ guardarRechazados(payload:any){
   
 }
 
+removerIncidenteAsignado(id){
+  let payload = {
+    id:id
+  }
+  return this._http.post(this.url+'removerIncidenteAsignado', payload);
 
-
-
+  }
 }
+
+
+
+

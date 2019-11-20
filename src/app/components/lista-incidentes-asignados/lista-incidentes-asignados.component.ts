@@ -6,6 +6,7 @@ import {saveAs} from 'file-saver';
 import * as alertify from 'alertifyjs';
 
 
+
 @Component({
   selector: 'app-lista-incidentes-asignados',
   templateUrl: './lista-incidentes-asignados.component.html',
@@ -103,6 +104,7 @@ incidente:any = {
 
 
   cerrarComponente(){
+    
     this.appListaIncidentesAsignados.emit(false);
   }
 
@@ -112,6 +114,15 @@ incidente:any = {
       
     });
     
+  }
+
+  private removerInicidente(id){
+    console.log('entro en removerIncidente', id);
+    this._p.removerIncidenteAsignado(id).subscribe(
+      (data:any)=>{
+        this.array = data;
+      }
+    );
   }
 
   verIncidente(item:any){
@@ -146,6 +157,7 @@ incidente:any = {
         error=>{console.log(error)}
       );
     }));
+    this.removerInicidente(item._id);
     
 
     }).catch(error=>{
@@ -168,6 +180,9 @@ incidente:any = {
     });
    });
   }
+
+
+
 
   
 

@@ -31,12 +31,13 @@ export class ListaIncidentesComponent implements OnInit {
   
   constructor(private _p : ProviderService, private _w : WebsocketService, private _http : HttpClient,
                 ) {
-    this.incidentesNuevos();
-    console.log(this.incidentes);
+    
+    
     
    }
 
   ngOnInit() {
+    this.incidentesNuevos();
     this._p.getEquipos().subscribe(
       (data:[])=>{
         this.equipos = data;
@@ -63,11 +64,7 @@ export class ListaIncidentesComponent implements OnInit {
     this._p.incidentesNuevos().subscribe(
       (data:[])=>{
        
-        if(data.length >0){
-          for(let i of data){
-            this.incidentes.push(i);
-          }
-        }
+        this.incidentes = data;
        
        
       },
@@ -87,22 +84,16 @@ export class ListaIncidentesComponent implements OnInit {
 
     this._p.asignarIncidente(payload).subscribe(
       data=>{
-        alertify.alert('Mensaje', 'Incidente asignado correctamente');
-        
-        let objeto={
-          mensaje:'Se ha asignado un nuevo incidente al equipo',
-          sala: payload._idEquipo
-        }
-        this._w.emit('mensaje-sala', objeto);
-        
-      
-
-      },
-      error=>{
-        console.log(error);
-        alertify.alert('Mensaje', 'No se ha podido asignar el incidente');
-      }
+        console.log("asi queda data =>",data);
+        },
+    
     );
+    
+
+   
+
+
+    
   }
 
 
@@ -129,36 +120,7 @@ download(incidente:any){
     );
 
   }
-  
-    
-  
-  
-
-
-  /*console.log("ingresa a download");
-  for(let i of incidente.adjunto){
-    console.log(i);
-    this._p.obtenerImagen(i).subscribe(
-      data=>{
-        console.log(data);
-      },
-      err=>{
-        console.log(err);
-
-      }
-    );
-
-    this._http.get('http://localhost:5500/obtenerImagen/162019.Certificado2017.pdf').subscribe(
-      data=>{
-        console.log(data);
-      },
-      error=>{
-        console.log(error);
-      }
-    );
-*/
-      
-      
+     
     
   }
   

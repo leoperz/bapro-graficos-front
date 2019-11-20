@@ -37,7 +37,7 @@ export class LineChartComponent implements OnInit {
 
 
   getData(){
-    //this.http.get('http://localhost:5500/lineChart').subscribe((data:any)=>this.lineChartData=data);
+    
     this.http.get('http://localhost:5500/generarGraficosMensuales').subscribe((data:any)=>{});
       
   }
