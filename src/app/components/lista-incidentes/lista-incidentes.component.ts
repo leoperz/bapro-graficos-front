@@ -46,7 +46,8 @@ export class ListaIncidentesComponent implements OnInit {
     this.escucharEvento();
     this._w.esucucharEvento('mensaje-sala-srv').subscribe(
       (data:any)=>{
-        this.incidentes = data.incidentes;
+        console.log("escuchar evento-->", data);
+        this.incidentesNuevos();
       }
     );
   }
@@ -95,9 +96,10 @@ export class ListaIncidentesComponent implements OnInit {
         
         let objeto={
           mensaje:'Se ha asignado un nuevo incidente al equipo',
-          sala: payload._idEquipo,
-          incidentes:this.incidentes
+          sala: payload._idEquipo
         }
+
+        console.log("Asi arma el objeto-->",objeto);
         
         this._w.emit('mensaje-sala', objeto);
         

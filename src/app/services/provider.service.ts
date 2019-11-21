@@ -208,6 +208,11 @@ removerIncidenteAsignado(id){
     console.log(payload);
     return this._http.post(this.url+'modificarNotificacion', payload);
   }
+
+  borrarIncidenteRechazado(id){
+  
+    return this._http.delete(this.url+'borrarIncidenteRechazado'+'/'+id);
+  }
 }
 
 

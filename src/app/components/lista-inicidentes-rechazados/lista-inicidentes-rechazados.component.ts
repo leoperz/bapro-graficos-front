@@ -13,6 +13,7 @@ export class ListaInicidentesRechazadosComponent implements OnInit {
 
   @Output() appListaIncidentesRechazados = new EventEmitter();
   
+  item:any=null;
   array:any[]=[];
   incidente:any = {
     titulo:"",
@@ -66,33 +67,8 @@ export class ListaInicidentesRechazadosComponent implements OnInit {
      
     };
 
-    this.identity = this._ls.getIdentity().equipo;
-
-    if(this.identity.length > 1){
-     
-      this._p.getEquiposPorId(this.identity).subscribe((result:any)=>{
-        
-        this.equipos = result;
-        
-         });
+    this.actualizarTabla();
  
-         
- 
-     
-       
-         document.getElementById('btnOculto').click();
-       
-       
-     }
-
-    this._p.getIncidentesRechazados().subscribe(
-      (data:[])=>{
-        this.array = data;
-      },
-      error=>{
-
-      }
-    );
 
   }
 
@@ -101,5 +77,36 @@ export class ListaInicidentesRechazadosComponent implements OnInit {
   cerrarComponente(){
     this.appListaIncidentesRechazados.emit(false);
   }
+
+  guardarItem(item:any){
+    this.item = item;
+    document.getElementById("auxiliar").click();
+  }
+
+  delete(){
+    if(this.item!=null){
+      this._p.borrarIncidenteRechazado(this.item._id).subscribe(
+        data=>{
+          this.actualizarTabla();
+        },
+        error=>{
+          console.log(error);
+        }
+      );
+    }
+  }
+
+  actualizarTabla(){
+    this._p.getIncidentesRechazados().subscribe(
+      (data:[])=>{
+        this.array = data;
+        
+      },
+      error=>{
+  
+      }
+    );
+  }
+  
 
 }
