@@ -188,6 +188,10 @@ export class DashboardComponent implements OnInit {
     this.listaInicidentesAsignados = respuesta;
   }
 
+  cerrarListaIncidentesRechazados(respuesta:any){
+    this.listaInicidentesRechazados = respuesta;
+  }
+
 
 
   escucharEvento(){

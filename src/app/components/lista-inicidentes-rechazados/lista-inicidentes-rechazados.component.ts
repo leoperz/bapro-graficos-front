@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ProviderService } from 'src/app/services/provider.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { Subject } from 'rxjs';
+import { WebsocketService } from 'src/app/services/websocket.service';
 
 
 @Component({
@@ -13,8 +14,10 @@ export class ListaInicidentesRechazadosComponent implements OnInit {
 
   @Output() appListaIncidentesRechazados = new EventEmitter();
   
+  
   item:any=null;
   array:any[]=[];
+  payload:[]=[];
   incidente:any = {
     titulo:"",
     descripcion:"",
@@ -41,9 +44,14 @@ export class ListaInicidentesRechazadosComponent implements OnInit {
   dtTriggers: Subject<any> = new Subject();
 
 
-  constructor(private _p : ProviderService, private _ls: LocalStorageService ) { }
+  constructor(private _p : ProviderService, private _ls: LocalStorageService, private _ws: WebsocketService ) { }
 
   ngOnInit() {
+    this._ws.esucucharEvento('mensaje-general').subscribe(
+      (data:[])=>{
+        this.array = data;
+      }
+    );
 
     this.dtOptions = {
       pagingType: 'full_numbers',
@@ -87,7 +95,8 @@ export class ListaInicidentesRechazadosComponent implements OnInit {
     if(this.item!=null){
       this._p.borrarIncidenteRechazado(this.item._id).subscribe(
         data=>{
-          this.actualizarTabla();
+          this.borrarElemento(this.item);
+          this._ws.emit('mensaje', this.array);
         },
         error=>{
           console.log(error);
@@ -106,6 +115,14 @@ export class ListaInicidentesRechazadosComponent implements OnInit {
   
       }
     );
+  }
+
+  private borrarElemento(item:any){
+    let i = this.array.indexOf(item);
+    if(i != -1){
+      this.array.splice(i, 1);
+    }
+
   }
   
 

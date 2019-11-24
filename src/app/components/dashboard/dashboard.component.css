@@ -12037,3 +12037,10 @@
     background: #2B52C5; 
     border-radius: 10px;
   }
+
+
+  .barchart{
+    width: 700px;
+    height: 700px;
+    padding: 20px;
+  }

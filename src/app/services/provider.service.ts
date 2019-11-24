@@ -12,7 +12,8 @@ export class ProviderService implements OnInit {
 
  private tecnologias$ = new Subject<any[]>();
  private equipos$ = new Subject<any[]>();
- url:string = 'http://localhost:5500/'
+ url:string = 'http://localhost:5500/';
+ url_barchart:string = 'http://localhost:5501/';
  listaTecnologias:any[] =[];
  listaEquipos:any[] = [];
 
@@ -213,9 +214,18 @@ removerIncidenteAsignado(id){
   
     return this._http.delete(this.url+'borrarIncidenteRechazado'+'/'+id);
   }
+
+
+
+
+                    /*------ Servicios de barchart backend------*/
+
+
+getDesarrolladores(){
+  return this._http.get(this.url_barchart+'desarrolladores');
 }
 
 
 
 
-
+}
