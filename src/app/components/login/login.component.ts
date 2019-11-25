@@ -67,7 +67,7 @@ export class NgbdModalContent implements OnInit{
   
 
 
-  constructor(public activeModal: NgbActiveModal, private _p: ProviderService) {
+  constructor(public activeModal: NgbActiveModal, private _p: ProviderService, private _ws: WebsocketService) {
    
   }
 
@@ -340,7 +340,7 @@ onSubmit() {
 
   this._provider.guardarUsuario(json).subscribe(
     result=>{
-      console.log("resultado de guardarUsuario",result);
+      
     }, 
     error=>{
       console.log(error);
@@ -348,9 +348,9 @@ onSubmit() {
     },
     ()=>{
       // si todo esta bien ruteamos a la pagina de login 
-      console.log("todo fue ok");
+      this._ws.emit('mensaje-front', json.tecnologias);
       alertify.alert('Mensaje', 'Se ha registrado correctamente', ()=>{
-        alertify.success('ok');
+        
         this.registerForm.reset();
         this.registrese();
 
