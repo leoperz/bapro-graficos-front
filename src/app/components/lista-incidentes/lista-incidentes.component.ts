@@ -46,7 +46,11 @@ export class ListaIncidentesComponent implements OnInit {
     this.escucharEvento();
     this._w.esucucharEvento('mensaje-sala-srv').subscribe(
       (data:any)=>{
-        this.incidentes = data.incidentes;
+        console.log('mensaje-sala-srv -->', data);
+        this.incidente = this.incidentesNuevos();
+        /*Hay que trabajar con el objeto que se envia
+        desde el socket al servidor
+        Esta manera no es la mas optima*/ 
       }
     );
   }
