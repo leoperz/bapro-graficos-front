@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit {
   incidentesNuevos:number=0;
   incidentesResueltos:number=0;
   incidentesAsignados:number=0;
+  incidentesRechazados:number=0;
   incidentesTotales:number=0;
   porcentaje=35;
   notificaciones:any[]=[];
@@ -64,19 +65,28 @@ export class DashboardComponent implements OnInit {
 
    private incidentesPorEstado(){
      this._p.cantidadIncidentesPorEstado().subscribe(
-       (data:any)=>{
+       (data:any[])=>{
          
         for(let i of data){
-          if(i._id =="asignado"){
+          if(i._id =="Asignado"){
             this.incidentesAsignados = i.count;
-            this.incidentesTotales += this.incidentesAsignados;
+            this.incidentesTotales = this.incidentesTotales + i.count;
+            
           }if(i._id=="nuevo"){
             this.incidentesNuevos = i.count;
-            this.incidentesTotales += this.incidentesNuevos;
+            this.incidentesTotales = this.incidentesTotales + i.count;
+            
           }if(i._id=="resuelto"){
             this.incidentesResueltos = i.count;
-            this.incidentesTotales += this.incidentesResueltos;
+            this.incidentesTotales = this.incidentesTotales + i.count;
+            
+          }if(i._id =="rechazado"){
+            this.incidentesRechazados = i.count;
+            this.incidentesTotales = this.incidentesTotales + i.count;
+            
           }
+
+          
         };
        },
        error=>{
@@ -178,13 +188,17 @@ export class DashboardComponent implements OnInit {
     this.listaInicidentesAsignados = respuesta;
   }
 
+  cerrarListaIncidentesRechazados(respuesta:any){
+    this.listaInicidentesRechazados = respuesta;
+  }
+
 
 
   escucharEvento(){
     this._ws.esucucharEvento('cantidad-incidentes').subscribe(
       (data:any)=>{
         this.incidentesTotales = data;
-        console.log("cantidad de incidentes nuevos (socket)",this.incidentesNuevos);
+        
       },
       err=>{
 

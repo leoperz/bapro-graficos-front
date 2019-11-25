@@ -99,9 +99,10 @@ export class ListaIncidentesComponent implements OnInit {
         
         let objeto={
           mensaje:'Se ha asignado un nuevo incidente al equipo',
-          sala: payload._idEquipo,
-          incidentes:this.incidentes
+          sala: payload._idEquipo
         }
+
+        console.log("Asi arma el objeto-->",objeto);
         
         this._w.emit('mensaje-sala', objeto);
         
@@ -113,6 +114,12 @@ export class ListaIncidentesComponent implements OnInit {
         alertify.alert('Mensaje', 'No se ha podido asignar el incidente');
       }
     );
+    
+
+   
+
+
+    
   }
 
 

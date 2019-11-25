@@ -60,7 +60,7 @@ width="100%" [dtTrigger]="dtTriggers">
 <br>
 
 
-<button  style="margin-left: 10px ; margin-bottom: 10px" mat-raised-button color="primary" (click)="cerrarComponente()">Cerrar lista</button>
+<button (click)="cerrarComponente()"  style="margin-left: 10px ; margin-bottom: 10px" mat-raised-button color="primary">Cerrar lista</button>
 <button *ngIf="identity.length > 1" style="margin-left: 10px ; margin-bottom: 10px"
          mat-raised-button color="primary" 
          data-toggle="modal"

@@ -2,7 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { LocalStorageService } from './local-storage.service';
 import { Subject } from 'rxjs';
-import { stringify } from '@angular/core/src/render3/util';
+
 
 
 @Injectable({
@@ -12,7 +12,8 @@ export class ProviderService implements OnInit {
 
  private tecnologias$ = new Subject<any[]>();
  private equipos$ = new Subject<any[]>();
- url:string = 'http://localhost:5500/'
+ url:string = 'http://localhost:5500/';
+ url_barchart:string = 'http://localhost:5501/';
  listaTecnologias:any[] =[];
  listaEquipos:any[] = [];
 
@@ -158,6 +159,10 @@ getInicidentesAsigados(ids:any){
 
 }
 
+getIncidentesRechazados(){
+  return this._http.get(this.url+'incidentesRechazados');
+}
+
 getEquiposPorId(ids:string[]){
   
   return this._http.post(this.url+'getEquiposPorId', ids);
@@ -178,24 +183,48 @@ guardarRechazados(payload:any){
   
 }
 
-guardarNotificacion(payload:any){
-  console.log("que payload viene",payload);
-  return this._http.post("http://localhost:5500/guardar_notificacion", payload);
+removerIncidenteAsignado(id){
+  let payload = {
+    id:id
+  }
+  return this._http.post(this.url+'removerIncidenteAsignado', payload);
+
+  }
+
+  guardarNotificacion(payload:any){
+    console.log("que payload viene",payload);
+    return this._http.post("http://localhost:5500/guardar_notificacion", payload);
+  }
+  
+  allNotifications(){
+    return this._http.get(this.url+'allNotifications');
+  }
+  
+  conditionNotifications(payload){
+    console.log("entra a conditionNotifications", payload);
+    return this._http.post(this.url+'conditionNotifications', payload);
+  }
+  
+  modificarNotificacion(payload){
+    console.log(payload);
+    return this._http.post(this.url+'modificarNotificacion', payload);
+  }
+
+  borrarIncidenteRechazado(id){
+  
+    return this._http.delete(this.url+'borrarIncidenteRechazado'+'/'+id);
+  }
+
+
+
+
+                    /*------ Servicios de barchart backend------*/
+
+
+getDesarrolladores(){
+  return this._http.get(this.url_barchart+'desarrolladores');
 }
 
-allNotifications(){
-  return this._http.get(this.url+'allNotifications');
-}
-
-conditionNotifications(payload){
-  console.log("entra a conditionNotifications", payload);
-  return this._http.post(this.url+'conditionNotifications', payload);
-}
-
-modificarNotificacion(payload){
-  console.log(payload);
-  return this._http.post(this.url+'modificarNotificacion', payload);
-}
 
 
 

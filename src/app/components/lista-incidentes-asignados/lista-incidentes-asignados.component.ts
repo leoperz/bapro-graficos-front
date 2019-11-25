@@ -4,6 +4,8 @@ import { Subject } from 'rxjs';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import {saveAs} from 'file-saver';
 import * as alertify from 'alertifyjs';
+import { WebsocketService } from 'src/app/services/websocket.service';
+
 
 
 @Component({
@@ -44,10 +46,16 @@ incidente:any = {
 }
 
 
-  constructor(private _p: ProviderService, private _ls: LocalStorageService ) {}
+  constructor(private _p: ProviderService, private _ls: LocalStorageService
+              ,private _ws: WebsocketService ) {}
 
   ngOnInit() {
     
+    this._ws.esucucharEvento('mensaje-sala-srv').subscribe(
+      data=>{
+        console.log("array informado -->",data);
+      }
+    );
     this.identity = this._ls.getIdentity().equipo;
     
     
@@ -104,17 +112,23 @@ incidente:any = {
 
 
   cerrarComponente(){
+    
     this.appListaIncidentesAsignados.emit(false);
   }
 
   cargarTabla(){
-    console.log("entra a cargar tabla en incidentes asignados");
+    
     this._p.getInicidentesAsigados(this._idEquipo).subscribe((data:[])=>{
       this.array = data;
-      console.log(this.array);
+      
       
     });
     
+  }
+
+  private removerInicidente(id){
+    console.log('entro en removerIncidente', id);
+    this._p.removerIncidenteAsignado(id).subscribe();
   }
 
   verIncidente(item:any){
@@ -149,6 +163,9 @@ incidente:any = {
         error=>{console.log(error)}
       );
     }));
+        this.removerInicidente(item._id);
+        this.removerItem(item);
+        this._ws.emit('mensaje-sala', this.array);
     
 
     }).catch(error=>{
@@ -157,6 +174,13 @@ incidente:any = {
     
    
    
+  }
+
+  private removerItem(item:any){
+    let i = this.array.indexOf(item);
+    if(i!=-1){
+      this.array.splice(i,1);
+    }
   }
 
 
@@ -171,6 +195,9 @@ incidente:any = {
     });
    });
   }
+
+
+
 
   
 

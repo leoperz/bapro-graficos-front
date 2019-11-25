@@ -24,6 +24,7 @@ import { MensajeComponent } from './components/mensaje/mensaje.component';
 import { ListaIncidentesAsignadosComponent } from './components/lista-incidentes-asignados/lista-incidentes-asignados.component';
 import {DataTablesModule} from 'angular-datatables';
 import { ListaInicidentesRechazadosComponent } from './components/lista-inicidentes-rechazados/lista-inicidentes-rechazados.component';
+import { BarChartComponent } from './components/bar-chart/bar-chart.component';
 
 
 
@@ -34,6 +35,7 @@ import { ListaInicidentesRechazadosComponent } from './components/lista-iniciden
 
 
 const config: SocketIoConfig = {url:'http://localhost:5500', options:{}};
+const config_barchart: SocketIoConfig = {url:'http://localhost:5501', options:{}};
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ const config: SocketIoConfig = {url:'http://localhost:5500', options:{}};
     PieChartComponent,
     MensajeComponent,
     ListaIncidentesAsignadosComponent,
-    ListaInicidentesRechazadosComponent
+    ListaInicidentesRechazadosComponent,
+    BarChartComponent
     
     
 
@@ -65,6 +68,7 @@ const config: SocketIoConfig = {url:'http://localhost:5500', options:{}};
     FormsModule,
     AppRoutingModule,
     SocketIoModule.forRoot(config),
+    SocketIoModule.forRoot(config_barchart),
     MatInputModule,
     BrowserAnimationsModule,
     MatButtonModule,
